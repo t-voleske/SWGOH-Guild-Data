@@ -26,7 +26,7 @@ def remove_son(str):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Removing from SON...')
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
@@ -49,7 +49,7 @@ def updateActivity(activity_time, pId_str):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Updating activity in DB...')
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -66,6 +66,28 @@ def updateActivity(activity_time, pId_str):
         print("Connection failed.")
         print(e)
 
+def updateGP(gp, pId_str):
+    conn = None
+    try:
+        # read the connection parameters
+
+         # connect to the PostgreSQL server
+        print('Updating GP in DB...')
+        conn = psycopg2.connect(**pg_connection_dict)
+        # Open a cursor to perform database operations
+
+        with conn.cursor() as cur:
+                # Update a data row in the table
+                cur.execute(
+                    "UPDATE players SET total_gp = %s WHERE player_id = %s ;", (gp, pId_str)
+                )
+
+                # Commit the changes
+                conn.commit()
+
+    except Exception as e:
+        print("Connection failed.")
+        print(e)
 
 
 def updateLastRaidResult(last_raid_result, pId_str):
@@ -74,7 +96,7 @@ def updateLastRaidResult(last_raid_result, pId_str):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Updating last raid result in DB...')
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -98,7 +120,7 @@ def updateRosterChecks(player_checks):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Updating roster checks in DB...')
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 

@@ -60,7 +60,10 @@ def check_roster(p):
 #Get current data from player_roster_checks table
 roster_check_data = read_roster_check()
 #List of guild member player_ids
-players = list(map(lambda x: x[0] if x[3] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players())) # type: ignore
+print(read_players())
+players = list(map(lambda x: x[0] if x[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players())) # type: ignore
+print("players: ")
+print(players)
 players = [x for x in players if x is not None]
 
 #filter for players that are zeffo_ready == True, then map entry to their player_id
@@ -78,6 +81,8 @@ players = list(filter(lambda x: x not in alrady_zeffo_ready and x not in players
 roster_array = []
 for e in players: # type: ignore
     roster_array.append(check_roster(e))
+print('roster_array: ')
+print(roster_array)
 enter_player_check(roster_array)
 
 #Iterate through all players that need an update in the table

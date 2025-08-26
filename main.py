@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from read_data import read_guild, read_players
 from api_request import post_request
 from enter_data import enter_players, log_gp
-from update_data import remove_son, updateActivity
+from update_data import remove_son, updateActivity, updateGP
 from datetime import datetime as dt
 
 dtime = dt.now()
@@ -23,6 +23,7 @@ class Player:
         print(self.nickname)
         print(self.last_activity_time)
         updateActivity(self.last_activity_time, self.player_id)
+        updateGP(self.galactic_power, self.player_id)
     
     def __str__(self):
         return f"{self.nickname}"
