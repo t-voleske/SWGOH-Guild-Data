@@ -21,7 +21,7 @@ df['total_gp'] = df['total_gp'].map(floatify)
 df['raid_score'] = df['raid_score'].map(floatify)
 print(df)
 
-
+main.batch_clear(["A2:H51"])
 main.update(range_name='A2:H51', values=df.values.tolist())
 
 
