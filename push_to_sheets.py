@@ -1,12 +1,18 @@
 import gspread
 from read_data import read_players_data
 import pandas as pd
+import os
+import json
+from dotenv import load_dotenv
+load_dotenv()
+
+filepath = os.getenv("FILEPATH_CREDENTIALS")
 
 def floatify(x):
     if x == '':
         return ''
     return float(x)
-gc = gspread.service_account(filename='credentials.json') # type: ignore
+gc = gspread.service_account(filename=filepath) # type: ignore
 
 sh = gc.open("SON_Guild_Data")
 ws = sh.sheet1
