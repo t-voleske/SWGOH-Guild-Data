@@ -102,33 +102,6 @@ def read_roster_check():
         print("Connection failed.")
         print(e)
 
-def read_raid_performance():
-
-    conn = None
-    try:
-        # read the connection parameters
-
-         # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(**pg_connection_dict)
-        # Open a cursor to perform database operations
-
-        with conn.cursor() as cur:
-                # Fetch all rows from the books table
-                cur.execute("SELECT * FROM raid_performance;")
-                rows = cur.fetchall()
-
-                #print("\n--- Players ---")
-                #for row in rows:
-                    #print(
-                        #f"Nickname: {row[1]}, total_gp: {row[2]}"
-                    #)
-                #print("--------------------\n")
-                return rows
-
-    except Exception as e:
-        print("Connection failed.")
-        print(e)
 
 def read_tickets_weekly():
 
@@ -285,6 +258,34 @@ def read_players_data():
         with conn.cursor() as cur:
                 # Fetch all rows from the books table
                 cur.execute("SELECT * FROM players_data;")
+                rows = cur.fetchall()
+
+                #print("\n--- Players ---")
+                #for row in rows:
+                    #print(
+                        #f"Nickname: {row[1]}, total_gp: {row[2]}"
+                    #)
+                #print("--------------------\n")
+                return rows
+
+    except Exception as e:
+        print("Connection failed.")
+        print(e)
+
+def read_raid_performance_special():
+
+    conn = None
+    try:
+        # read the connection parameters
+
+         # connect to the PostgreSQL server
+        print('Reading raid_performance view...')
+        conn = psycopg2.connect(**pg_connection_dict)
+        # Open a cursor to perform database operations
+
+        with conn.cursor() as cur:
+                # Fetch all rows from the books table
+                cur.execute("SELECT p.player_id, p.nickname, rp.score AS score, rp.percent_of_average AS percent_of_average FROM players p LEFT JOIN raid_performance rp ON p.nickname = rp.nickname;")
                 rows = cur.fetchall()
 
                 #print("\n--- Players ---")

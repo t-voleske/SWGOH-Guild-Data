@@ -1,6 +1,5 @@
 from read_data import read_players
 from enter_data import log_gp
-from update_data import updateGP
 from datetime import datetime as dt
 
 dtime = dt.now()

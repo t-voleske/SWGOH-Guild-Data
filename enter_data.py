@@ -26,7 +26,7 @@ def enter_players(players_to_insert):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...enter_players()')
+        print('Entering player data into DB...')
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
@@ -57,7 +57,7 @@ def log_gp(gp_logs):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...log_gp()')
+        print('Logging player GP ...')
         conn = psycopg2.connect(**pg_connection_dict)
 
 
@@ -84,7 +84,7 @@ def enter_player_check(player_checks):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Entering player checks into DB...')
         conn = psycopg2.connect(**pg_connection_dict)
 
 
@@ -111,7 +111,7 @@ def enter_tickets(tkts):
         # read the connection parameters
 
          # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
+        print('Logging tickets...')
         conn = psycopg2.connect(**pg_connection_dict)
 
 
@@ -123,6 +123,33 @@ def enter_tickets(tkts):
                 tkts,
             )
             print("Inserted ticket_logs")
+
+            # Commit the changes to the database
+            conn.commit()
+
+    except Exception as e:
+        print("Connection failed to ticket_log.")
+        print(e)
+
+def enter_log_raid_score(raid_score_logs):
+
+    conn = None
+    try:
+        # read the connection parameters
+
+         # connect to the PostgreSQL server
+        print('Logging raid score...')
+        conn = psycopg2.connect(**pg_connection_dict)
+
+
+        # Open a cursor to perform database operations
+        with conn.cursor() as cur:
+            # Insert multiple values at once
+            cur.executemany(
+                "INSERT INTO raid_score_log (player_id, raid_score, percent_of_avg) VALUES (%s, %s, %s);",
+                raid_score_logs,
+            )
+            print("Inserted raid_score_log")
 
             # Commit the changes to the database
             conn.commit()
