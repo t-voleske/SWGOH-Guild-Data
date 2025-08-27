@@ -10,9 +10,15 @@ filepath = os.getenv("FILEPATH_CREDENTIALS")
 
 def floatify(x):
     if x == '':
-        return ''
+        return '-'
     return float(x)
 gc = gspread.service_account(filename=filepath) # type: ignore
+
+def convert_to_readible(x):
+    if x == '':
+        return '-'
+    return format(int(x), ',')
+    #return str(format(int(x), ',')).replace(',', '.')
 
 sh = gc.open("SON_Guild_Data")
 ws = sh.sheet1
@@ -24,8 +30,8 @@ monthly = sh.worksheet("Tickets_monthly")
 df = pd.DataFrame(read_players_data(), columns=['nickname', 'last_activity', 'total_gp', 'raid_score', 'average_percent', 'zeffo_ready', 'tickets_lost_week', 'days_tickets_lost'])
 df = df.fillna('')
 df['average_percent'] = df['average_percent'].map(floatify)
-df['total_gp'] = df['total_gp'].map(floatify)
-df['raid_score'] = df['raid_score'].map(floatify)
+df['total_gp'] = df['total_gp'].map(convert_to_readible)
+df['raid_score'] = df['raid_score'].map(convert_to_readible)
 print(df)
 
 #Prepare data for weekly ticket sheet
