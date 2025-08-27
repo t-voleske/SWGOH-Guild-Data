@@ -30,8 +30,8 @@ monthly = sh.worksheet("Tickets_monthly")
 df = pd.DataFrame(read_players_data(), columns=['nickname', 'last_activity', 'total_gp', 'raid_score', 'average_percent', 'zeffo_ready', 'tickets_lost_week', 'days_tickets_lost'])
 df = df.fillna('')
 df['average_percent'] = df['average_percent'].map(floatify)
-df['total_gp'] = df['total_gp'].map(convert_to_readible)
-df['raid_score'] = df['raid_score'].map(convert_to_readible)
+df['total_gp'] = df['total_gp'].map(floatify)
+df['raid_score'] = df['raid_score'].map(floatify)
 print(df)
 
 #Prepare data for weekly ticket sheet
