@@ -285,7 +285,7 @@ def read_raid_performance_special():
 
         with conn.cursor() as cur:
                 # Fetch all rows from the books table
-                cur.execute("SELECT p.player_id, p.nickname, rp.score AS score, rp.percent_of_average AS percent_of_average FROM players p LEFT JOIN raid_performance rp ON p.nickname = rp.nickname;")
+                cur.execute("SELECT p.player_id, p.nickname, rp.score AS score, rp.percent_of_average AS percent_of_average FROM players p LEFT JOIN raid_performance rp ON p.nickname = rp.nickname WHERE guild_id::text = 'Xyw6K1R1SOazMbS94TX7fw'::text;")
                 rows = cur.fetchall()
 
                 #print("\n--- Players ---")
