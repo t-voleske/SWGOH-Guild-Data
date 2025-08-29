@@ -14,12 +14,6 @@ def floatify(x):
     return float(x)
 gc = gspread.service_account(filename=filepath) # type: ignore
 
-def convert_to_readible(x):
-    if x == '':
-        return '-'
-    return format(int(x), ',')
-    #return str(format(int(x), ',')).replace(',', '.')
-
 sh = gc.open("SON_Guild_Data")
 ws = sh.sheet1
 main = sh.worksheet("Main")

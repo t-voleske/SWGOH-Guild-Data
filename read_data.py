@@ -257,7 +257,7 @@ def read_players_data():
 
         with conn.cursor() as cur:
                 # Fetch all rows from the books table
-                cur.execute("SELECT * FROM players_data;")
+                cur.execute("SELECT * FROM players_data ORDER BY nickname ASC;")
                 rows = cur.fetchall()
 
                 #print("\n--- Players ---")
