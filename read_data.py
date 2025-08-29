@@ -299,3 +299,31 @@ def read_raid_performance_special():
     except Exception as e:
         print("Connection failed.")
         print(e)
+
+def read_member_points():
+
+    conn = None
+    try:
+        # read the connection parameters
+
+         # connect to the PostgreSQL server
+        print('Reading member_points view...')
+        conn = psycopg2.connect(**pg_connection_dict)
+        # Open a cursor to perform database operations
+
+        with conn.cursor() as cur:
+                # Fetch all rows from the books table
+                cur.execute("SELECT * FROM member_points ORDER BY nickname ASC;")                
+                rows = cur.fetchall()
+
+                #print("\n--- Players ---")
+                #for row in rows:
+                    #print(
+                        #f"Nickname: {row[1]}, total_gp: {row[2]}"
+                    #)
+                #print("--------------------\n")
+                return rows
+
+    except Exception as e:
+        print("Connection failed.")
+        print(e)
