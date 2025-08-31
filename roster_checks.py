@@ -1,5 +1,4 @@
 import os
-import psycopg2
 import json
 from dotenv import load_dotenv
 from read_data import read_players, read_roster_check
@@ -19,7 +18,6 @@ def is_list_or_tuple_instance(l):
         raise ValueError('read_players is not returning a list or tuple. Check read_players function')
 
 def check_roster(p):
-    #print(p)
     player = json.dumps(post_request(player_url, {"payload": {"playerId": p}}))
     player_data = json.loads(player)['rosterUnit']
 
@@ -37,13 +35,11 @@ def check_roster(p):
     #Check if Jedi Cal is at lvl 85
     jedi_cal_leveled = list(filter(lambda t: (t['definitionId'] == 'JEDIKNIGHTCAL:SEVEN_STAR' and t['currentLevel'] == 85), player_data)).__len__() > 0
     if not jedi_cal_leveled:
-        #print("A")
         check = all_7_star, jedi_cal_unlocked, False, False, False, p
-        #print(check)
+        print('Check if:')
         return check
 
     else:
-        #print("B")
         #Relics checks
         jedi_cal_r7 = list(filter(lambda t: t['definitionId'] == 'JEDIKNIGHTCAL:SEVEN_STAR' and t['relic']['currentTier'] >= 9, player_data)).__len__() > 0
         cere_r7 = list(filter(lambda t: t['definitionId'] == 'CEREJUNDA:SEVEN_STAR' and t['relic']['currentTier'] >= 9, player_data)).__len__() > 0
@@ -58,6 +54,7 @@ def check_roster(p):
         jedi_cal_skills_done = jedi_cal_unique and jedi_cal_leader and jedi_cal_special_03 and jedi_cal_special_02 and jedi_cal_special_01
 
         check = all_7_star, jedi_cal_unlocked, jedi_cal_r7, cere_r7, jedi_cal_skills_done, p
+        print('Check else:')
         print(check)
         return check
 
@@ -77,10 +74,11 @@ print(players)
 players = [x for x in players if x is not None]
 
 # No update needed for players already zeffo_ready == True
-alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[5] == True, roster_check_data))))
-#print(alrady_zeffo_ready)
+alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == True, roster_check_data))))
+
 #filter for players that are zeffo_ready == False, then map entry to their player_id
-players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[5] == False, roster_check_data))))
+players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == False, roster_check_data))))
+print('players_to_update:')
 print(players_to_update)
 
 #Remove zeffo ready and players to update from players list
@@ -89,13 +87,12 @@ players = list(filter(lambda x: x not in alrady_zeffo_ready and x not in players
 
 #Iterate through all players that need an initial entry in the table
 roster_array = []
-for e in players: # type: ignore
+for e in players:
     roster_array.append(check_roster(e))
-print('roster_array: ')
-print(roster_array)
+
 enter_player_check(roster_array)
 
 #Iterate through all players that need an update in the table
-for d in players_to_update: # type: ignore
+for d in players_to_update:
     updateRosterChecks(check_roster(d))
 
