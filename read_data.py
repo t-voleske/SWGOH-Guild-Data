@@ -20,7 +20,11 @@ pg_connection_dict = {
     'host': host
 }
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_guild():
+    
 
     conn = None
     try:
@@ -43,6 +47,9 @@ def read_guild():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_players():
     conn = None
     try:
@@ -58,6 +65,9 @@ def read_players():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_roster_check():
 
     conn = None
@@ -74,7 +84,9 @@ def read_roster_check():
         print("Connection failed.")
         print(e)
 
-
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_tickets_weekly():
 
     conn = None
@@ -91,7 +103,9 @@ def read_tickets_weekly():
         print("Connection failed.")
         print(e)
 
-
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_tickets_monthly():
 
     conn = None
@@ -108,6 +122,9 @@ def read_tickets_monthly():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_zeffo_readiness():
 
     conn = None
@@ -124,6 +141,9 @@ def read_zeffo_readiness():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_guild_members():
 
     conn = None
@@ -140,6 +160,9 @@ def read_guild_members():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_last_login():
 
     conn = None
@@ -156,6 +179,9 @@ def read_last_login():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_players_data():
 
     conn = None
@@ -172,6 +198,9 @@ def read_players_data():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_raid_performance_special():
 
     conn = None
@@ -188,6 +217,9 @@ def read_raid_performance_special():
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def read_member_points():
 
     conn = None

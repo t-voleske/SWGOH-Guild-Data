@@ -7,6 +7,9 @@ from enter_data import enter_tickets
 
 load_dotenv()
 guild_url = os.getenv("GUILD_URL") #url for comlink/guild interface
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 guild_id = read_guild()
 
 guild = json.dumps(post_request(guild_url, {"payload": {"guildId": guild_id, "includeRecentGuildActivityInfo": True}}))

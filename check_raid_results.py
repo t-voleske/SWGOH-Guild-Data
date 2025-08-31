@@ -7,6 +7,9 @@ from api_request import post_request
 
 load_dotenv()
 guild_url = os.getenv("GUILD_URL")
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 son_guild_id = read_guild()
 
 guild = json.dumps(post_request(guild_url, {"payload": {"guildId": son_guild_id, "includeRecentGuildActivityInfo": True}}))

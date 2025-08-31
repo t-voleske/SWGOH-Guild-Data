@@ -19,7 +19,9 @@ pg_connection_dict = {
     'port': port,
     'host': host
 }
-
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 
 def enter_players(players_to_insert):
     conn = None

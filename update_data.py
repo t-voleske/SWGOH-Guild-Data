@@ -20,7 +20,9 @@ pg_connection_dict = {
     'host': host
 }
 
-
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def remove_son(str):
     string = str
     conn = None
@@ -45,6 +47,9 @@ def remove_son(str):
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def updateActivity(activity_time, pId_str):
     conn = None
     try:
@@ -68,6 +73,9 @@ def updateActivity(activity_time, pId_str):
         print("Connection failed.")
         print(e)
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def updateGP(gp, pId_str):
     conn = None
     try:
@@ -92,6 +100,9 @@ def updateGP(gp, pId_str):
         print(e)
 
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def updateLastRaidResult(last_raid_result, pId_str):
     conn = None
     try:
@@ -116,6 +127,9 @@ def updateLastRaidResult(last_raid_result, pId_str):
         print(e)
 
 
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 def updateRosterChecks(player_checks):
     conn = None
     try:

@@ -12,11 +12,11 @@ load_dotenv()
 guild_url = os.getenv("GUILD_URL")
 player_url = os.getenv("PLAYER_URL")
 
-def is_list_instance(l):
-    if isinstance(l, (list)):
+def is_list_or_tuple_instance(l):
+    if isinstance(l, (list, tuple)):
         return l
     else:
-        raise ValueError('read_players is not returning a list of lists. Check read_players function')
+        raise ValueError('read_players is not returning a list or tuple. Check read_players function')
 
 def check_roster(p):
     #print(p)
@@ -68,16 +68,16 @@ if roster_check_data is None:
 read_players_data = read_players()
 if read_players_data is None:
     raise ValueError('read_players returning None. Check read_players function')
-players = list(map(lambda x: is_list_instance(x)[0] if is_list_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
+players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
 print("players: ")
 print(players)
 players = [x for x in players if x is not None]
 
 # No update needed for players already zeffo_ready == True
-alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_instance(x)[5] == True, roster_check_data))))
+alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[5] == True, roster_check_data))))
 #print(alrady_zeffo_ready)
 #filter for players that are zeffo_ready == False, then map entry to their player_id
-players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_instance(x)[5] == False, roster_check_data))))
+players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[5] == False, roster_check_data))))
 print(players_to_update)
 
 #Remove zeffo ready and players to update from players list
@@ -94,6 +94,5 @@ enter_player_check(roster_array)
 
 #Iterate through all players that need an update in the table
 for d in players_to_update: # type: ignore
-    #updateRosterChecks(check_roster(d))
-    print(check_roster(d))
+    updateRosterChecks(check_roster(d))
 
