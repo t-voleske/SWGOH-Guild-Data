@@ -3,25 +3,27 @@ from read_data import read_players_data, read_tickets_weekly, read_tickets_month
 import pandas as pd
 import os
 from dotenv import load_dotenv
+from pathlib import Path
+
 load_dotenv()
 
-#get filepath for configuration.json for Google Spreadsheet API from .env file 
-filepath = os.getenv("FILEPATH_CREDENTIALS")
-
-#Helper function to cast to float and handle missing values
 def floatify(x):
     if x == '':
         return '-'
     return float(x)
 
-# Create gspread object to interact with spreadsheet API
-gc = gspread.service_account(filename=filepath) # type: ignore
+#Create gspread object to interact with spreadsheet API
+filepath = os.getenv("FILEPATH_CREDENTIALS")
+if filepath is None:
+    raise ValueError("filepath must not be None. Check your .env file")
+gc = gspread.service_account(filename=Path(filepath)) 
 
-sh = gc.open("SON_Guild_Data") # open spreadsheet in gspread
-main = sh.worksheet("Main") # gspread object for Main worksheet
-weekly = sh.worksheet("Tickets_weekly") # gspread object for Tickets_weekly worksheet
-monthly = sh.worksheet("Tickets_monthly") # gspread object for Tickets_monthly worksheet
-points_weekly = sh.worksheet("Points_weekly") # gspread object for Points_weekly worksheet
+#open spreadsheet in gspread & create gspread objects for each worksheet
+sh = gc.open("SON_Guild_Data") 
+main = sh.worksheet("Main")
+weekly = sh.worksheet("Tickets_weekly")
+monthly = sh.worksheet("Tickets_monthly")
+points_weekly = sh.worksheet("Points_weekly")
 
 #Prepare data for Main sheet
 df = pd.DataFrame(read_players_data(), columns=['nickname', 'last_activity', 'total_gp', 'raid_score', 'average_percent', 'zeffo_ready', 'tickets_lost_week', 'days_tickets_lost'])
@@ -29,7 +31,7 @@ df = df.fillna('')
 df['average_percent'] = df['average_percent'].map(floatify)
 df['total_gp'] = df['total_gp'].map(floatify)
 df['raid_score'] = df['raid_score'].map(floatify)
-print(df)
+#print(df)
 
 #Prepare data for weekly ticket sheet
 df_weekly = pd.DataFrame(read_tickets_weekly(), columns=['nickname', 'tickets_lost', 'days_tickets_lost', 'full_days_lost'])
@@ -56,7 +58,3 @@ monthly.update(range_name='A2:D52', values=df_monthly.values.tolist())
 # Batch clear Points_weekly, then update
 points_weekly.batch_clear(["A2:G52"])
 points_weekly.update(range_name='A2:G52', values=df_weekly_points.values.tolist())
-
-
-#listified = df.values.tolist()
-#print(listified)

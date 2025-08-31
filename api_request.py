@@ -3,9 +3,6 @@ import requests
 def post_request(str, d):
     url = str
     data = d
-    headers = {
-			'Content-Type': 'application/json'
-	}
     try:
         response = requests.post(url, json=data)
 

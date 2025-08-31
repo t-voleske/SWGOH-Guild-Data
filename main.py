@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 from read_data import read_guild, read_players
 from api_request import post_request
-from enter_data import enter_players, log_gp
+from enter_data import enter_players, enter_gp_logs
 from update_data import remove_son, updateActivity, updateGP
 from datetime import datetime as dt
 
@@ -72,25 +72,3 @@ print("--players to remove--")
 print(players_to_remove)
 for i in players_to_remove:
     remove_son(i)
- 
-
-
-#----------------- Making a gp history log -----------------
-db_players = read_players()
-#print(db_players)
-gp_logs = []
-for e in db_players: # type: ignore
-    gp_logs.append((e[0], e[2], dtime))
-
-
-### Needs a timer!
-## Commented out to not spam the DB with data
-#log_gp(gp_logs)
-
-
-##Maybe player level api requests
-#player_api_arr = []
-#for a in db_players: # type: ignore
-#    player_api_arr.append(json.dumps(post_request(guild_url, {"payload": {"playerId": a[0]}})))
-
-#print(player_api_arr)[0] # type: ignore

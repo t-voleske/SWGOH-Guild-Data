@@ -3,18 +3,20 @@ import psycopg2
 from dotenv import load_dotenv
 
 load_dotenv()
-
-
 password = os.getenv('PASS')
 host = os.getenv('HOST')
 user = os.getenv('USER')
-
+db_name = os.getenv('DBNAME')
+port = os.getenv('PORT')
+if port is None:
+    raise ValueError("Check .env file! PORT variable must not be None")
+port = int(port)
 
 pg_connection_dict = {
-    'dbname': 'guild_data',
+    'dbname': db_name,
     'user': user,
     'password': password,
-    'port': 5432,
+    'port': port,
     'host': host
 }
 

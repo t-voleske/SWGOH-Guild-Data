@@ -1,20 +1,13 @@
 from read_data import read_players
-from enter_data import log_gp
-from datetime import datetime as dt
-
-dtime = dt.now()
+from enter_data import enter_gp_logs
 
 
-#----------------- Making a gp history log -----------------
+
 db_players = read_players()
-#print(db_players)
+if db_players is None:
+    raise ValueError('Players did not read correctly. Check read_players function')
 gp_logs = []
-for e in db_players: # type: ignore
-    gp_logs.append((e[0], e[2], dtime))
+for e in db_players:
+    gp_logs.append((e[0], e[2]))
 
-
-### Needs a timer!
-## Commented out to not spam the DB with data
-log_gp(gp_logs)
-
-#print(gp_logs)
+enter_gp_logs(gp_logs)

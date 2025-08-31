@@ -2,19 +2,24 @@ import os
 import psycopg2
 import json
 from dotenv import load_dotenv
-from read_data import read_guild, read_players, read_roster_check
+from read_data import read_players, read_roster_check
 from update_data import updateRosterChecks
 from api_request import post_request
 from enter_data import enter_player_check
 
-# Load environment variables from .env file
 load_dotenv()
+#get guild and player interfaces for comlink
 guild_url = os.getenv("GUILD_URL")
 player_url = os.getenv("PLAYER_URL")
-son_guild_id = read_guild()
+
+def is_list_instance(l):
+    if isinstance(l, (list)):
+        return l
+    else:
+        raise ValueError('read_players is not returning a list of lists. Check read_players function')
 
 def check_roster(p):
-    print(p)
+    #print(p)
     player = json.dumps(post_request(player_url, {"payload": {"playerId": p}}))
     player_data = json.loads(player)['rosterUnit']
 
@@ -32,19 +37,18 @@ def check_roster(p):
     #Check if Jedi Cal is at lvl 85
     jedi_cal_leveled = list(filter(lambda t: (t['definitionId'] == 'JEDIKNIGHTCAL:SEVEN_STAR' and t['currentLevel'] == 85), player_data)).__len__() > 0
     if not jedi_cal_leveled:
-        print("A")
+        #print("A")
         check = all_7_star, jedi_cal_unlocked, False, False, False, p
-        print(check)
+        #print(check)
         return check
 
     else:
-        print("B")
+        #print("B")
         #Relics checks
         jedi_cal_r7 = list(filter(lambda t: t['definitionId'] == 'JEDIKNIGHTCAL:SEVEN_STAR' and t['relic']['currentTier'] >= 9, player_data)).__len__() > 0
         cere_r7 = list(filter(lambda t: t['definitionId'] == 'CEREJUNDA:SEVEN_STAR' and t['relic']['currentTier'] >= 9, player_data)).__len__() > 0
-        both_r7 = jedi_cal_r7 and cere_r7
 
-        #Omi & Zeta check
+        #Ability level checks
         skills = list(filter(lambda t: t['definitionId'] == 'JEDIKNIGHTCAL:SEVEN_STAR', player_data))[0]['skill']
         jedi_cal_unique = list(filter(lambda t: (t['id'] == 'uniqueskill_JEDIKNIGHTCAL01' and t['tier'] >= 6), skills)).__len__() > 0
         jedi_cal_leader = list(filter(lambda t: (t['id'] == 'leaderskill_JEDIKNIGHTCAL' and t['tier'] >= 5), skills)).__len__() > 0
@@ -57,20 +61,23 @@ def check_roster(p):
         print(check)
         return check
 
-#Get current data from player_roster_checks table
 roster_check_data = read_roster_check()
-#List of guild member player_ids
-print(read_players())
-players = list(map(lambda x: x[0] if x[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players())) # type: ignore
+if roster_check_data is None:
+    raise ValueError('roster_check_data should not be None. Check read_roster_check function')
+#print(read_players())
+read_players_data = read_players()
+if read_players_data is None:
+    raise ValueError('read_players returning None. Check read_players function')
+players = list(map(lambda x: is_list_instance(x)[0] if is_list_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
 print("players: ")
 print(players)
 players = [x for x in players if x is not None]
 
-#filter for players that are zeffo_ready == True, then map entry to their player_id
-alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: x[5] == True, roster_check_data)))) # type: ignore
-print(alrady_zeffo_ready)
+# No update needed for players already zeffo_ready == True
+alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_instance(x)[5] == True, roster_check_data))))
+#print(alrady_zeffo_ready)
 #filter for players that are zeffo_ready == False, then map entry to their player_id
-players_to_update = list(map(lambda y: y[0], list(filter(lambda x: x[5] == False, roster_check_data)))) # type: ignore
+players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_instance(x)[5] == False, roster_check_data))))
 print(players_to_update)
 
 #Remove zeffo ready and players to update from players list
@@ -87,11 +94,6 @@ enter_player_check(roster_array)
 
 #Iterate through all players that need an update in the table
 for d in players_to_update: # type: ignore
-    updateRosterChecks(check_roster(d))
-
-
-#enter_player_check(player_checks)
-#print("Roster check result:")
-#print(read_roster_check())
-
+    #updateRosterChecks(check_roster(d))
+    print(check_roster(d))
 
