@@ -68,6 +68,9 @@ if roster_check_data is None:
 read_players_data = read_players()
 if read_players_data is None:
     raise ValueError('read_players returning None. Check read_players function')
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
 print("players: ")
 print(players)
