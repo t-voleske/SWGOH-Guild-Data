@@ -41,29 +41,35 @@ def read_guild():
                         f"guild_id: {row[0]}, guild_name: {row[1]}"
                     )
                 print("--------------------\n")
-                return rows[0][0]
+                return rows
 
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def read_players():
+def read_players(guild_id):
     conn = None
     try:
         print('Reading from players table WHERE player part of guild')
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-                cur.execute("SELECT * FROM players WHERE guild_id::text = 'Xyw6K1R1SOazMbS94TX7fw'::text ORDER BY nickname DESC;")
+                cur.execute("SELECT * FROM players WHERE guild_id::text = %s ORDER BY nickname DESC;", (guild_id,))
                 rows = cur.fetchall()
                 return rows
 
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -83,6 +89,9 @@ def read_roster_check():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -102,6 +111,9 @@ def read_tickets_weekly():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -121,6 +133,9 @@ def read_tickets_monthly():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -140,6 +155,9 @@ def read_zeffo_readiness():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -159,6 +177,9 @@ def read_guild_members():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -178,6 +199,9 @@ def read_last_login():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -197,6 +221,9 @@ def read_players_data():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -216,6 +243,9 @@ def read_raid_performance_special():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -237,3 +267,6 @@ def read_member_points():
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()

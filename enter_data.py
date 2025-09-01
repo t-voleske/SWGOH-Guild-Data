@@ -19,9 +19,6 @@ pg_connection_dict = {
     'port': port,
     'host': host
 }
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
 
 def enter_players(players_to_insert):
     conn = None
@@ -43,7 +40,12 @@ def enter_players(players_to_insert):
     except Exception as e:
         print("Connection failed.")
         print(e)
-
+    finally:
+        if conn:
+            conn.close()
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 
 def enter_gp_logs(gp_logs):
     conn = None
@@ -64,6 +66,9 @@ def enter_gp_logs(gp_logs):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def enter_player_check(player_checks):
     conn = None
@@ -82,6 +87,9 @@ def enter_player_check(player_checks):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def enter_tickets(tickets):
     conn = None
@@ -100,6 +108,9 @@ def enter_tickets(tickets):
     except Exception as e:
         print("Connection failed to ticket_log.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 def enter_log_raid_score(raid_score_logs):
     conn = None
@@ -118,3 +129,6 @@ def enter_log_raid_score(raid_score_logs):
     except Exception as e:
         print("Connection failed to ticket_log.")
         print(e)
+    finally:
+        if conn:
+            conn.close()

@@ -4,7 +4,7 @@ import json
 from dotenv import load_dotenv
 from read_data import read_guild, read_players
 from api_request import post_request
-from enter_data import enter_players, enter_gp_logs
+from enter_data import enter_players
 from update_data import remove_son, updateActivity, updateGP
 from datetime import datetime as dt
 

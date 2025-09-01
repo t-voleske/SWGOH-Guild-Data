@@ -1,7 +1,7 @@
 import os
 import json
 from dotenv import load_dotenv
-from read_data import read_players, read_roster_check
+from read_data import read_players, read_roster_check, read_guild
 from update_data import updateRosterChecks
 from api_request import post_request
 from enter_data import enter_player_check
@@ -62,37 +62,46 @@ roster_check_data = read_roster_check()
 if roster_check_data is None:
     raise ValueError('roster_check_data should not be None. Check read_roster_check function')
 #print(read_players())
-read_players_data = read_players()
-if read_players_data is None:
-    raise ValueError('read_players returning None. Check read_players function')
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
-print("players: ")
-print(players)
-players = [x for x in players if x is not None]
-
-# No update needed for players already zeffo_ready == True
-alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == True, roster_check_data))))
-
-#filter for players that are zeffo_ready == False, then map entry to their player_id
-players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == False, roster_check_data))))
-print('players_to_update:')
-print(players_to_update)
-
-#Remove zeffo ready and players to update from players list
-players = list(filter(lambda x: x not in alrady_zeffo_ready and x not in players_to_update, players))
 
 
-#Iterate through all players that need an initial entry in the table
-roster_array = []
-for e in players:
-    roster_array.append(check_roster(e))
+guilds_config = read_guild()
+#print('After Import:')
+#print(guilds_config)
+if guilds_config is None:
+    raise ValueError('guilds should not be None. Check read_guilds function')
 
-enter_player_check(roster_array)
+for g in guilds_config:
+    read_players_data = read_players(g[0])
+    if read_players_data is None:
+        raise ValueError('read_players returning None. Check read_players function')
+    # --------------------------------------------------------------------------------------------
+    # TO DO: Add support for multiple guilds
+    # --------------------------------------------------------------------------------------------
+    players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
+    print("players: ")
+    print(players)
+    players = [x for x in players if x is not None]
 
-#Iterate through all players that need an update in the table
-for d in players_to_update:
-    updateRosterChecks(check_roster(d))
+    # No update needed for players already zeffo_ready == True
+    alrady_zeffo_ready = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == True, roster_check_data))))
+
+    #filter for players that are zeffo_ready == False, then map entry to their player_id
+    players_to_update = list(map(lambda y: y[0], list(filter(lambda x: is_list_or_tuple_instance(x)[6] == False, roster_check_data))))
+    print('players_to_update:')
+    print(players_to_update)
+
+    #Remove zeffo ready and players to update from players list
+    players = list(filter(lambda x: x not in alrady_zeffo_ready and x not in players_to_update, players))
+
+
+    #Iterate through all players that need an initial entry in the table
+    roster_array = []
+    for e in players:
+        roster_array.append(check_roster(e))
+
+    enter_player_check(roster_array)
+
+    #Iterate through all players that need an update in the table
+    for d in players_to_update:
+        updateRosterChecks(check_roster(d))
 

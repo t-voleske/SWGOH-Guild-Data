@@ -46,6 +46,9 @@ def remove_son(str):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -72,6 +75,9 @@ def updateActivity(activity_time, pId_str):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
@@ -98,11 +104,11 @@ def updateGP(gp, pId_str):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
 def updateLastRaidResult(last_raid_result, pId_str):
     conn = None
     try:
@@ -125,6 +131,9 @@ def updateLastRaidResult(last_raid_result, pId_str):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
 
 
 # --------------------------------------------------------------------------------------------
@@ -152,3 +161,6 @@ def updateRosterChecks(player_checks):
     except Exception as e:
         print("Connection failed.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
