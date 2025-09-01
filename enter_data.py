@@ -43,9 +43,7 @@ def enter_players(players_to_insert):
     finally:
         if conn:
             conn.close()
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
+
 
 def enter_gp_logs(gp_logs):
     conn = None
@@ -69,6 +67,10 @@ def enter_gp_logs(gp_logs):
     finally:
         if conn:
             conn.close()
+
+# --------------------------------------------------------------------------------------------
+# TO DO: Add support for multiple guilds
+# --------------------------------------------------------------------------------------------
 
 def enter_player_check(player_checks):
     conn = None
@@ -112,7 +114,7 @@ def enter_tickets(tickets):
         if conn:
             conn.close()
 
-def enter_log_raid_score(raid_score_logs):
+def enter_raid_score_log(raid_score_logs):
     conn = None
     try:
         print('Logging raid score...')
@@ -129,6 +131,40 @@ def enter_log_raid_score(raid_score_logs):
     except Exception as e:
         print("Connection failed to ticket_log.")
         print(e)
+    finally:
+        if conn:
+            conn.close()
+
+def enter_player_archive(players_to_insert):
+    if not players_to_insert:
+        print("No players to insert.")
+        return
+    
+    conn = None
+    try:
+        print(f'Entering {len(players_to_insert)} new players into players table...')
+        conn = psycopg2.connect(**pg_connection_dict)
+        with conn.cursor() as cur:
+            cur.executemany(
+                "INSERT INTO players_archive (player_id, nickname, total_gp, guild_id) VALUES (%s, %s, %s, %s);",
+                players_to_insert,
+            )
+            inserted_count = cur.rowcount
+            print(f"Inserted {inserted_count} players data")
+            conn.commit()
+            print("Done")
+    except psycopg2.IntegrityError as ie:
+        print(f"Data integrity error (duplicate keys, constraint violations): {ie}")
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        print(f"Database error: {db_error}")
+        if conn:
+            conn.rollback()
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()

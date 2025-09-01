@@ -74,10 +74,8 @@ for g in guilds_config:
     read_players_data = read_players(g[0])
     if read_players_data is None:
         raise ValueError('read_players returning None. Check read_players function')
-    # --------------------------------------------------------------------------------------------
-    # TO DO: Add support for multiple guilds
-    # --------------------------------------------------------------------------------------------
-    players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == 'Xyw6K1R1SOazMbS94TX7fw' else None, read_players_data))
+    
+    players = list(map(lambda x: is_list_or_tuple_instance(x)[0] if is_list_or_tuple_instance(x)[5] == g[0] else None, read_players_data))
     print("players: ")
     print(players)
     players = [x for x in players if x is not None]

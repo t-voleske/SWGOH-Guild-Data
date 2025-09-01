@@ -1,11 +1,11 @@
 import os
-import psycopg2
 import json
 from dotenv import load_dotenv
 from read_data import read_guild, read_players
 from api_request import post_request
 from enter_data import enter_players
-from update_data import remove_son, updateActivity, updateGP
+from update_data import updateActivity, updateGP, remove_from_guild
+from archive_players import archive_process
 from datetime import datetime as dt
 
 dtime = dt.now()
@@ -34,44 +34,49 @@ class Player:
     def dbify(self):
         return (self.player_id, self.nickname, self.galactic_power, self.guild_id, self.last_activity_time) 
 
+
 # Load environment variables from .env file
 load_dotenv()
 guild_url = os.getenv("GUILD_URL")
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-son_guild_id = read_guild()
 
-guild = json.dumps(post_request(guild_url, {"payload": {"guildId": son_guild_id, "includeRecentGuildActivityInfo": True}}))
-data = json.loads(guild)['guild']['member']
-#print(guild)
-playerArr = []
-nicknameArr = []
-for m in data:
-    #print(list(filter(lambda t: t['type'] == 2, m['memberContribution']))[0]['currentValue'])
-    playerArr.append(Player(m['playerId'], m['playerName'], m['galacticPower'], m['shipGalacticPower'], m['characterGalacticPower'], son_guild_id, m['lastActivityTime'], 600 - int(list(filter(lambda t: t['type'] == 2, m['memberContribution']))[0]['currentValue'])))
-    nicknameArr.append(m['playerName'])
+guilds_config = read_guild()
+#print('After Import:')
+#print(guilds_config)
+if guilds_config is None:
+    raise ValueError('guilds should not be None. Check read_guilds function')
+
+for g in guilds_config:
+    guild = json.dumps(post_request(guild_url, {"payload": {"guildId": g[0], "includeRecentGuildActivityInfo": True}}))
+    data = json.loads(guild)['guild']['member']
+    #print(guild)
+    playerArr = []
+    nicknameArr = []
+    for m in data:
+        #print(list(filter(lambda t: t['type'] == 2, m['memberContribution']))[0]['currentValue'])
+        playerArr.append(Player(m['playerId'], m['playerName'], m['galacticPower'], m['shipGalacticPower'], m['characterGalacticPower'], g[0], m['lastActivityTime'], 600 - int(list(filter(lambda t: t['type'] == 2, m['memberContribution']))[0]['currentValue'])))
+        nicknameArr.append(m['playerName'])
 
 
-db_nicknames = []
-db_players = read_players()
-for n in db_players: # type: ignore
-    db_nicknames.append(n[1])    
+    db_nicknames = []
+    db_players = read_players(g[0])
+    for n in db_players: # type: ignore
+        db_nicknames.append(n[1])    
 
-to_add = list(set(nicknameArr) - set(db_nicknames))
-to_remove = list(set(db_nicknames) - set(nicknameArr))
-print(to_add)
+    to_add = list(set(nicknameArr) - set(db_nicknames))
+    to_remove = list(set(db_nicknames) - set(nicknameArr))
+    players_to_add = list(filter(lambda x: x.nickname in to_add, playerArr))
+    players_to_remove = list(filter(lambda y: y[1] not in playerArr, to_remove))
+    enterArr = []
+    for w in players_to_add:
+        enterArr.append(w.dbify())
 
-players_to_add = list(filter(lambda x: x.nickname in to_add, playerArr))
-players_to_remove = list(filter(lambda y: y[1] not in playerArr, to_remove)) # type: ignore
+    enter_players(enterArr)
 
-enterArr = []
-for w in players_to_add:
-    enterArr.append(w.dbify())
-
-enter_players(enterArr)
-
+    
 print("--players to remove--")
 print(players_to_remove)
 for i in players_to_remove:
-    remove_son(i)
+    remove_from_guild(i)
+
+#archive players after their guild affiliation was removed
+archive_process()

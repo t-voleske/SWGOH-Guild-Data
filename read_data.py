@@ -20,9 +20,7 @@ pg_connection_dict = {
     'host': host
 }
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
+
 def read_guild():
     
 
@@ -50,9 +48,25 @@ def read_guild():
         if conn:
             conn.close()
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
+
+def read_players_raw():
+    conn = None
+    try:
+        print('Reading all entries of players table')
+        conn = psycopg2.connect(**pg_connection_dict)
+
+        with conn.cursor() as cur:
+                cur.execute("SELECT * FROM players ORDER BY nickname DESC;")
+                rows = cur.fetchall()
+                return rows
+
+    except Exception as e:
+        print("Connection failed.")
+        print(e)
+    finally:
+        if conn:
+            conn.close()
+
 def read_players(guild_id):
     conn = None
     try:
@@ -228,7 +242,7 @@ def read_players_data():
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def read_raid_performance_special():
+def read_raid_performance_by_guild(guild_id):
 
     conn = None
     try:
@@ -236,7 +250,10 @@ def read_raid_performance_special():
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-                cur.execute("SELECT p.player_id, p.nickname, rp.score AS score, rp.percent_of_average AS percent_of_average FROM players p LEFT JOIN raid_performance rp ON p.nickname = rp.nickname WHERE guild_id::text = 'Xyw6K1R1SOazMbS94TX7fw'::text;")
+                cur.execute(
+                        "SELECT p.player_id, p.nickname, rp.score AS score, rp.percent_of_average AS percent_of_average FROM players p LEFT JOIN raid_performance rp ON p.nickname = rp.nickname WHERE guild_id::text = %s;", 
+                        (guild_id,)
+                    )
                 rows = cur.fetchall()
                 return rows
 

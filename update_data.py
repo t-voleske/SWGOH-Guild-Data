@@ -23,7 +23,7 @@ pg_connection_dict = {
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def remove_son(str):
+def remove_from_guild(str):
     string = str
     conn = None
     try:
