@@ -5,17 +5,13 @@ from read_data import read_players, read_roster_check, read_guild
 from update_data import updateRosterChecks
 from api_request import post_request
 from enter_data import enter_player_check
+from helper_functions import check_none, is_list_or_tuple_instance
+
 
 load_dotenv()
 #get guild and player interfaces for comlink
-guild_url = os.getenv("GUILD_URL")
-player_url = os.getenv("PLAYER_URL")
-
-def is_list_or_tuple_instance(l):
-    if isinstance(l, (list, tuple)):
-        return l
-    else:
-        raise ValueError('read_players is not returning a list or tuple. Check read_players function')
+guild_url : str = check_none(os.getenv('PASS'), 'Error: Check .env file. GUILD_URL should not be None')
+player_url : str = check_none(os.getenv('PLAYER_URL'), 'Error: Check .env file. GUILD_URL should not be None')
 
 def check_roster(p):
     player = json.dumps(post_request(player_url, {"payload": {"playerId": p}}))

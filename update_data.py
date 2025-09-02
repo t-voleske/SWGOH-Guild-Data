@@ -1,16 +1,15 @@
 import os
 import psycopg2
 from dotenv import load_dotenv
+from helper_functions import check_none
+
 
 load_dotenv()
-password = os.getenv('PASS')
-host = os.getenv('HOST')
-user = os.getenv('USER')
-db_name = os.getenv('DBNAME')
-port = os.getenv('PORT')
-if port is None:
-    raise ValueError("Check .env file! PORT variable must not be None")
-port = int(port)
+password : str = check_none(os.getenv('PASS'), 'Error: Check .env file. PASS should not be None')
+host : str = check_none(os.getenv('HOST'), 'Error: Check .env file. HOST should not be None')
+user : str = check_none(os.getenv('USER'), 'Error: Check .env file. USER should not be None')
+db_name : str = check_none(os.getenv('DBNAME'), 'Error: Check .env file. DBNAME should not be None')
+port : int = int(check_none(os.getenv('PORT'), 'Error: Check .env file. PORT should not be None'))
 
 pg_connection_dict = {
     'dbname': db_name,

@@ -5,6 +5,7 @@ from read_data import read_guild
 from api_request import post_request
 from enter_data import enter_tickets
 from datetime import datetime, timedelta
+from helper_functions import check_none
 
 #guarding against data entry out of reset window
 def is_around_reset_time(reset_time):
@@ -16,11 +17,9 @@ def is_around_reset_time(reset_time):
     return (reset_time > current_time) or (reset_time <= time_in_2_minutes)
 
 load_dotenv()
-guild_url = os.getenv("GUILD_URL") #url for comlink/guild interface
+guild_url = check_none(os.getenv("GUILD_URL"), 'Error: Check .env file. GUILD_URL should not be None') #url for comlink/guild interface
 
-guilds_config = read_guild()
-if guilds_config is None:
-    raise ValueError('guilds should not be None. Check read_guilds function')
+guilds_config = check_none(read_guild(), 'guilds should not be None. Check read_guilds function')
 
 for g in guilds_config:
     if not is_around_reset_time(g[2]):

@@ -7,6 +7,8 @@ from enter_data import enter_players
 from update_data import updateActivity, updateGP, remove_from_guild
 from archive_players import archive_process
 from datetime import datetime as dt
+from helper_functions import check_none
+
 
 dtime = dt.now()
 
@@ -37,13 +39,11 @@ class Player:
 
 # Load environment variables from .env file
 load_dotenv()
-guild_url = os.getenv("GUILD_URL")
+guild_url : str = check_none(os.getenv("GUILD_URL"), 'Error: Check .env file. GUILD_URL should not be None')
 
-guilds_config = read_guild()
+guilds_config = check_none(read_guild(), 'guilds should not be None. Check read_guilds function')
 #print('After Import:')
 #print(guilds_config)
-if guilds_config is None:
-    raise ValueError('guilds should not be None. Check read_guilds function')
 
 for g in guilds_config:
     guild = json.dumps(post_request(guild_url, {"payload": {"guildId": g[0], "includeRecentGuildActivityInfo": True}}))
@@ -58,8 +58,8 @@ for g in guilds_config:
 
 
     db_nicknames = []
-    db_players = read_players(g[0])
-    for n in db_players: # type: ignore
+    db_players = check_none(read_players(g[0]), 'Players should not be None. Check read_players function')
+    for n in db_players:
         db_nicknames.append(n[1])    
 
     to_add = list(set(nicknameArr) - set(db_nicknames))

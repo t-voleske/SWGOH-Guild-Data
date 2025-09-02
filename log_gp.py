@@ -1,19 +1,16 @@
 from read_data import read_players, read_guild
 from enter_data import enter_gp_logs
+from helper_functions import check_none
 
 gp_logs = []
-guilds_config = read_guild()
+guilds_config = check_none(read_guild(), 'Guild should not be None. Check read_guild function')
 #print('After Import:')
 #print(guilds_config)
-if guilds_config is None:
-    raise ValueError('guilds should not be None. Check read_guilds function')
 
 for g in guilds_config:
     #print('g:')
     #print(g)
-    db_players = read_players(g[0])
-    if db_players is None:
-        raise ValueError('Players did not read correctly. Check read_players function')
+    db_players = check_none(read_players(g[0]), 'Players should not be None. Check read_players function')
 
     for e in db_players:
         gp_logs.append((e[0], e[2]))

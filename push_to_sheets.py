@@ -1,9 +1,9 @@
 import gspread
 from read_data import read_players_data, read_tickets_weekly, read_tickets_monthly, read_member_points, read_guild
 import pandas as pd
-import os
 from dotenv import load_dotenv
 from pathlib import Path
+from helper_functions import env_check_none
 
 load_dotenv()
 
@@ -16,9 +16,7 @@ def floatify(x):
 # TO DO: Add support for multiple guilds (spreadsheet needs to be set up separately)
 # --------------------------------------------------------------------------------------------
 #Create gspread object to interact with spreadsheet API
-filepath = os.getenv("FILEPATH_CREDENTIALS")
-if filepath is None:
-    raise ValueError("filepath must not be None. Check your .env file")
+filepath : str = env_check_none("FILEPATH_CREDENTIALS")
 gc = gspread.service_account(filename=Path(filepath)) 
 
 guilds_config = read_guild()
