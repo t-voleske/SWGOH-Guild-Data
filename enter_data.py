@@ -5,28 +5,38 @@ from helper_functions import check_none
 
 
 load_dotenv()
-password : str = check_none(os.getenv('PASS'), 'Error: Check .env file. PASS should not be None')
-host : str = check_none(os.getenv('HOST'), 'Error: Check .env file. HOST should not be None')
-user : str = check_none(os.getenv('USER'), 'Error: Check .env file. USER should not be None')
-db_name : str = check_none(os.getenv('DBNAME'), 'Error: Check .env file. DBNAME should not be None')
-port : int = int(check_none(os.getenv('PORT'), 'Error: Check .env file. PORT should not be None'))
+password: str = check_none(
+    os.getenv("PASS"), "Error: Check .env file. PASS should not be None"
+)
+host: str = check_none(
+    os.getenv("HOST"), "Error: Check .env file. HOST should not be None"
+)
+user: str = check_none(
+    os.getenv("USER"), "Error: Check .env file. USER should not be None"
+)
+db_name: str = check_none(
+    os.getenv("DBNAME"), "Error: Check .env file. DBNAME should not be None"
+)
+port: int = int(
+    check_none(os.getenv("PORT"), "Error: Check .env file. PORT should not be None")
+)
 
 pg_connection_dict = {
-    'dbname': db_name,
-    'user': user,
-    'password': password,
-    'port': port,
-    'host': host
+    "dbname": db_name,
+    "user": user,
+    "password": password,
+    "port": port,
+    "host": host,
 }
+
 
 def enter_players(players_to_insert):
     conn = None
     try:
-        print('Entering new player data into players table...')
+        print("Entering new player data into players table...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-
             cur.executemany(
                 "INSERT INTO players (player_id, nickname, total_gp, guild_id, last_activity_time) VALUES (%s, %s, %s, %s, %s);",
                 players_to_insert,
@@ -47,9 +57,8 @@ def enter_players(players_to_insert):
 def enter_gp_logs(gp_logs):
     conn = None
     try:
-        print('Logging player GP ...')
+        print("Logging player GP ...")
         conn = psycopg2.connect(**pg_connection_dict)
-
 
         with conn.cursor() as cur:
             cur.executemany(
@@ -67,14 +76,16 @@ def enter_gp_logs(gp_logs):
         if conn:
             conn.close()
 
+
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
 
+
 def enter_player_check(player_checks):
     conn = None
     try:
-        print('Entering player checks into player_roster_checks table ...')
+        print("Entering player checks into player_roster_checks table ...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
@@ -92,10 +103,11 @@ def enter_player_check(player_checks):
         if conn:
             conn.close()
 
+
 def enter_tickets(tickets):
     conn = None
     try:
-        print('Logging tickets ...')
+        print("Logging tickets ...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
@@ -113,10 +125,11 @@ def enter_tickets(tickets):
         if conn:
             conn.close()
 
+
 def enter_raid_score_log(raid_score_logs):
     conn = None
     try:
-        print('Logging raid score...')
+        print("Logging raid score...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
@@ -134,14 +147,15 @@ def enter_raid_score_log(raid_score_logs):
         if conn:
             conn.close()
 
+
 def enter_player_archive(players_to_insert):
     if not players_to_insert:
         print("No players to insert.")
         return
-    
+
     conn = None
     try:
-        print(f'Entering {len(players_to_insert)} new players into players table...')
+        print(f"Entering {len(players_to_insert)} new players into players table...")
         conn = psycopg2.connect(**pg_connection_dict)
         with conn.cursor() as cur:
             cur.executemany(

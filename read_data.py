@@ -120,14 +120,22 @@ def read_roster_check():
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def read_tickets_weekly():
+def read_tickets_weekly(guild_id):
     conn = None
     try:
         print("Reading from tickets_aggregated_weekly view...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM tickets_aggregated_weekly;")
+            cur.execute(
+                "SELECT taw.nickname AS nickname, taw.tickets_lost AS tickets_lost, "
+                "taw.days_tickets_lost AS days_tickets_lost, taw.full_days_lost AS full_days_lost "
+                "FROM players p "
+                "LEFT JOIN tickets_aggregated_weekly taw "
+                "ON p.nickname = taw.nickname "
+                "WHERE guild_id = %s ORDER BY nickname DESC;",
+                (guild_id,),
+            )
             rows = cur.fetchall()
             return rows
 
@@ -142,14 +150,22 @@ def read_tickets_weekly():
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def read_tickets_monthly():
+def read_tickets_monthly(guild_id):
     conn = None
     try:
         print("Reading from tickets_aggregated_monthly view...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM tickets_aggregated_monthly;")
+            cur.execute(
+                "SELECT tam.nickname AS nickname, tam.tickets_lost AS tickets_lost, "
+                "tam.days_tickets_lost AS days_tickets_lost, tam.full_days_lost AS full_days_lost "
+                "FROM players p "
+                "LEFT JOIN tickets_aggregated_monthly tam "
+                "ON p.nickname = tam.nickname "
+                "WHERE guild_id = %s ORDER BY nickname DESC;",
+                (guild_id,),
+            )
             rows = cur.fetchall()
             return rows
 
@@ -186,14 +202,17 @@ def read_zeffo_readiness():
 # --------------------------------------------------------------------------------------------
 # TO DO: Add support for multiple guilds
 # --------------------------------------------------------------------------------------------
-def read_guild_members():
+def read_guild_members(guild_id):
     conn = None
     try:
         print("Reading from guild_members view...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM guild_members;")
+            cur.execute(
+                "SELECT * FROM guild_members WHERE guild_id::text = %s ORDER BY nickname DESC;",
+                (guild_id,),
+            )
             rows = cur.fetchall()
             return rows
 
@@ -227,17 +246,17 @@ def read_last_login():
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-def read_players_data():
+def read_players_data(guild_id):
     conn = None
     try:
         print("Reading from players_data table ...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM players_data ORDER BY nickname ASC;")
+            cur.execute(
+                "SELECT * FROM players_data WHERE nickname IN (SELECT nickname FROM players WHERE guild_id = %s) ORDER BY nickname DESC;",
+                (guild_id,),
+            )
             rows = cur.fetchall()
             return rows
 
@@ -249,9 +268,6 @@ def read_players_data():
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
 def read_raid_performance_by_guild(guild_id):
     conn = None
     try:
@@ -274,17 +290,17 @@ def read_raid_performance_by_guild(guild_id):
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-def read_member_points():
+def read_member_points(guild_id):
     conn = None
     try:
         print("Reading member_points view...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM member_points ORDER BY nickname ASC;")
+            cur.execute(
+                "SELECT * FROM member_points WHERE nickname IN (SELECT nickname FROM players WHERE guild_id = %s) ORDER BY nickname DESC;",
+                (guild_id,),
+            )
             rows = cur.fetchall()
             return rows
 

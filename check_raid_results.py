@@ -24,9 +24,10 @@ for g in guilds_config:
     #print(read_players(g[0]))
     players = check_none(read_players(g[0]), 'players should not be None. Check read_players function')
     for e in players:
+        temp_player_id = e[0]
         print(e[0])
-        pre_result = list(filter(lambda t: t['playerId'] == e[0], raid_results))
-        if pre_result.__len__() > 0:
+        pre_result = list(filter(lambda t, : t['playerId'] == temp_player_id, raid_results))
+        if len(pre_result) > 0:
             raid_result = pre_result[0]['memberProgress']
         else:
             raid_result = None
