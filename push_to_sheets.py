@@ -3,7 +3,6 @@ from pathlib import Path
 import gspread
 import pandas as pd
 from dotenv import load_dotenv
-from helper_functions import check_none
 from read_data import (
     read_players_data,
     read_tickets_weekly,
@@ -11,6 +10,11 @@ from read_data import (
     read_member_points,
     read_guild,
 )
+from helper_functions import check_none, setup_logging
+import logging
+
+logger = logging.getLogger("guild_data_app")
+setup_logging()
 
 load_dotenv()
 
@@ -31,15 +35,16 @@ filepath: str = check_none(
 )
 gc = gspread.service_account(filename=Path(filepath))
 
-guilds_config = read_guild()
-# print('After Import:')
-# print(guilds_config)
-if guilds_config is None:
-    raise ValueError("guilds should not be None. Check read_guilds function")
+guilds_config = check_none(
+    read_guild(), "guilds should not be None. Check read_guilds function"
+)
+logger.debug("After Import: %s", guilds_config)
+
 
 for g in guilds_config:
     # open spreadsheet in gspread & create gspread objects for each worksheet
-    print(g)
+    logger.info("Pushing sheet data for: %s", g[1])
+    logger.info(g)
     sh = gc.open(g[3])
     main = sh.worksheet("Main")
     weekly = sh.worksheet("Tickets_weekly")
@@ -64,7 +69,7 @@ for g in guilds_config:
     df["average_percent"] = df["average_percent"].map(floatify)
     df["total_gp"] = df["total_gp"].map(floatify)
     df["raid_score"] = df["raid_score"].map(floatify)
-    # print(df)
+    logger.debug(df)
 
     # Prepare data for weekly ticket sheet
     df_weekly = pd.DataFrame(

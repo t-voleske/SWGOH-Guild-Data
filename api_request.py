@@ -1,8 +1,13 @@
+import logging
 import requests
 from typing import Dict, Any
+from helper_functions import setup_logging
+
+logger = logging.getLogger("guild_data_app")
 
 
 def post_request(url: str, data: Dict[str, Any], timeout: int = 30):
+    setup_logging()
     try:
         response = requests.post(url, json=data, timeout=timeout)
 
@@ -10,8 +15,8 @@ def post_request(url: str, data: Dict[str, Any], timeout: int = 30):
             content = response.json()
             return content
         else:
-            print("Error:", response.status_code)
+            logger.error(response.status_code)
             return None
     except requests.exceptions.RequestException as e:
-        print("Error:", e)
+        logger.error(e)
         return None

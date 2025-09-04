@@ -7,9 +7,13 @@ from dotenv import load_dotenv
 from api_request import post_request
 from archive_players import archive_process
 from enter_data import enter_players
-from helper_functions import check_none
 from read_data import read_guild, read_players
 from update_data import remove_from_guild, update_activity, updateGP
+from helper_functions import check_none, setup_logging
+import logging
+
+logger = logging.getLogger("guild_data_app")
+setup_logging()
 
 dtime = dt.now()
 
@@ -34,8 +38,8 @@ class Player:
         self.ground_gp = ground_gp
         self.last_activity_time = dt.fromtimestamp(int(last_activity_time) / 1000)
         self.current_tickets = current_tickets
-        print(self.nickname)
-        print(self.last_activity_time)
+        logger.debug(self.nickname)
+        logger.debug(self.last_activity_time)
         update_activity(self.last_activity_time, self.player_id)
         updateGP(self.galactic_power, self.player_id)
 
@@ -61,8 +65,7 @@ guild_url: str = check_none(
 guilds_config = check_none(
     read_guild(), "guilds should not be None. Check read_guilds function"
 )
-# print('After Import:')
-# print(guilds_config)
+logger.debug("After Import: %s", guilds_config)
 
 for g in guilds_config:
     guild = json.dumps(
@@ -72,7 +75,7 @@ for g in guilds_config:
         )
     )
     data = json.loads(guild)["guild"]["member"]
-    # print(guild)
+    logger.debug("guild: %s", guild)
     playerArr = []
     nicknameArr = []
     for m in data:
@@ -113,8 +116,8 @@ for g in guilds_config:
     enter_players(enterArr)
 
 
-print("--players to remove--")
-print(players_to_remove)
+logger.info("--players to remove--")
+logger.info(players_to_remove)
 for i in players_to_remove:
     remove_from_guild(i)
 

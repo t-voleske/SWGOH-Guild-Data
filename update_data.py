@@ -1,25 +1,15 @@
-import os
+import logging
 import psycopg2
-from dotenv import load_dotenv
-from helper_functions import check_none
+from helper_functions import get_env, setup_logging
 
+logger = logging.getLogger("guild_data_app")
+setup_logging()
 
-load_dotenv()
-password: str = check_none(
-    os.getenv("PASS"), "Error: Check .env file. PASS should not be None"
-)
-host: str = check_none(
-    os.getenv("HOST"), "Error: Check .env file. HOST should not be None"
-)
-user: str = check_none(
-    os.getenv("USER"), "Error: Check .env file. USER should not be None"
-)
-db_name: str = check_none(
-    os.getenv("DBNAME"), "Error: Check .env file. DBNAME should not be None"
-)
-port: int = int(
-    check_none(os.getenv("PORT"), "Error: Check .env file. PORT should not be None")
-)
+password: str = get_env("PASS")
+host: str = get_env("HOST")
+user: str = get_env("USER")
+db_name: str = get_env("DBNAME")
+port: int = int(get_env("PORT"))
 
 pg_connection_dict = {
     "dbname": db_name,
@@ -29,51 +19,49 @@ pg_connection_dict = {
     "host": host,
 }
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
 
-
-def remove_from_guild(player_string: str):
-    string: str = player_string
+def remove_from_guild(player_id: str):
     conn = None
     try:
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        print("Removing from SON...")
+        logger.info("Removing from SON...")
         conn = psycopg2.connect(**pg_connection_dict)
 
         with conn.cursor() as cur:
             # Update a data row in the table
             cur.execute(
-                "UPDATE players SET guild_id = %s WHERE nickname = %s ;", (" ", string)
+                "UPDATE players SET guild_id = %s WHERE nickname = %s ;",
+                (" ", player_id),
             )
-            print("Updated player " + string)
+            logger.info("Updated player: %s", player_id)
 
             # Commit the changes
             conn.commit()
 
-    except psycopg2.DatabaseError as e:
-        print("Connection failed on remove_from_guild")
-        print(e)
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-
-
-def update_activity(activity_time, pid_str):
+def update_activity(activity_time, player_id: str):
     conn = None
     try:
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        print("Updating activity in DB...")
+        logger.info("Updating activity in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -81,59 +69,69 @@ def update_activity(activity_time, pid_str):
             # Update a data row in the table
             cur.execute(
                 ("UPDATE players SET last_activity_time = %s WHERE player_id = %s ;"),
-                (activity_time, pid_str),
+                (activity_time, player_id),
             )
 
             # Commit the changes
             conn.commit()
 
-    except psycopg2.DatabaseError as e:
-        print("Connection failed in update_activity.")
-        print(e)
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
-
-
-def updateGP(gp, pId_str):
+def updateGP(gp, player_id: str):
     conn = None
     try:
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        print("Updating GP in DB...")
+        logger.info("Updating GP in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
         with conn.cursor() as cur:
             # Update a data row in the table
             cur.execute(
-                "UPDATE players SET total_gp = %s WHERE player_id = %s ;", (gp, pId_str)
+                "UPDATE players SET total_gp = %s WHERE player_id = %s ;",
+                (gp, player_id),
             )
 
             # Commit the changes
             conn.commit()
 
-    except psycopg2.DatabaseError as e:
-        print("Connection failed to update total_gp")
-        print(e)
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()
 
 
-def updateLastRaidResult(last_raid_result, pid_str):
+def updateLastRaidResult(last_raid_result, player_id: str):
     conn = None
     try:
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        print("Updating last raid result in DB...")
+        logger.info("Updating last raid result in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -141,30 +139,34 @@ def updateLastRaidResult(last_raid_result, pid_str):
             # Update a data row in the table
             cur.execute(
                 "UPDATE players SET last_raid_result = %s WHERE player_id = %s ;",
-                (last_raid_result, pid_str),
+                (last_raid_result, player_id),
             )
 
             # Commit the changes
             conn.commit()
 
-    except psycopg2.DatabaseError as e:
-        print("Connection failed to update last_raid_result.")
-        print(e)
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds
-# --------------------------------------------------------------------------------------------
 def updateRosterChecks(player_checks):
     conn = None
     try:
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        print("Updating roster checks in DB...")
+        logger.info("Updating roster checks in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -180,9 +182,16 @@ def updateRosterChecks(player_checks):
             # Commit the changes
             conn.commit()
 
-    except psycopg2.DatabaseError as e:
-        print("Connection failed to update players_roster_checks")
-        print(e)
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
     finally:
         if conn:
             conn.close()

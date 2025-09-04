@@ -1,23 +1,27 @@
 from read_data import read_raid_performance_by_guild, read_guild
 from enter_data import enter_raid_score_log
-from helper_functions import check_none
+from helper_functions import check_none, setup_logging
+import logging
+
+logger = logging.getLogger("guild_data_app")
+setup_logging()
 
 raid_score_log = []
 guilds_config = check_none(
     read_guild(), "Guild should not be None. Check read_players function"
 )
-# print('After Import:')
-# print(guilds_config)
+logger.debug("After Import: %s", guilds_config)
 
 for g in guilds_config:
-    print(g[0])
+    logger.debug("g[0]: %s", g[0])
     db_scores = check_none(
         read_raid_performance_by_guild(g[0]),
         "Value should not be None. Check read_raid_performance_by_guild function",
     )
-    # print(db_players)
+    logger.debug("db_scores: %s", db_scores)
     for e in db_scores:
         raid_score_log.append((e[0], e[2], e[3]))
-    print(raid_score_log)
+    logger.debug("raid_score_log: %s", raid_score_log)
+    logger.info("Logging raid performance for: %s", g[1])
 
 enter_raid_score_log(raid_score_log)

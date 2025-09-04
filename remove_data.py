@@ -1,32 +1,34 @@
-import os
 import psycopg2
-from dotenv import load_dotenv
-from helper_functions import check_none
+from helper_functions import setup_logging, get_env
+import logging
+
+logger = logging.getLogger("guild_data_app")
+setup_logging()
 
 
-load_dotenv()
-password : str = check_none(os.getenv('PASS'), 'Error: Check .env file. PASS should not be None')
-host : str = check_none(os.getenv('HOST'), 'Error: Check .env file. HOST should not be None')
-user : str = check_none(os.getenv('USER'), 'Error: Check .env file. USER should not be None')
-db_name : str = check_none(os.getenv('DBNAME'), 'Error: Check .env file. DBNAME should not be None')
-port : int = int(check_none(os.getenv('PORT'), 'Error: Check .env file. PORT should not be None'))
+password: str = get_env("PASS")
+host: str = get_env("HOST")
+user: str = get_env("USER")
+db_name: str = get_env("DBNAME")
+port: int = int(get_env("PORT"))
 
 pg_connection_dict = {
-    'dbname': db_name,
-    'user': user,
-    'password': password,
-    'port': port,
-    'host': host
+    "dbname": db_name,
+    "user": user,
+    "password": password,
+    "port": port,
+    "host": host,
 }
+
 
 def remove_from_players(player_to_remove):
     if not player_to_remove:
-        print("No players to remove.")
+        logger.info("No players to remove.")
         return
-    
+
     conn = None
     try:
-        print(f'Removing {len(player_to_remove)} old guild members...')
+        logger.info("Removing %s old guild members...", len(player_to_remove))
         conn = psycopg2.connect(**pg_connection_dict)
         with conn.cursor() as cur:
             cur.executemany(
@@ -34,15 +36,17 @@ def remove_from_players(player_to_remove):
                 player_to_remove,
             )
             deleted_count = cur.rowcount
-            print(f"Removed {deleted_count} old guild members after archiving")
+            logger.info("Removed %s old guild members", deleted_count)
             conn.commit()
-            print("Done")
-    except psycopg2.Error as db_error:
-        print(f"Database error: {db_error}")
+            logger.info("Done")
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
         if conn:
             conn.rollback()
-    except Exception as e:
-        print(f"Unexpected error: {e}")
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
         if conn:
             conn.rollback()
     finally:
