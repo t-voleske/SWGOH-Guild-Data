@@ -71,14 +71,14 @@ for g in guilds_config:
         read_tickets_weekly(g[0]),
         columns=["nickname", "tickets_lost", "days_tickets_lost", "full_days_lost"],
     )
-    df_weekly = df_weekly.fillna("")
+    df_weekly = df_weekly.dropna()
 
     # Prepare data for monthly ticket sheet
     df_monthly = pd.DataFrame(
         read_tickets_monthly(g[0]),
         columns=["nickname", "tickets_lost", "days_tickets_lost", "full_days_lost"],
     )
-    df_monthly = df_monthly.fillna("")
+    df_monthly = df_monthly.dropna()
 
     # Prepare data for weekly points sheet
     df_weekly_points = pd.DataFrame(
@@ -101,11 +101,11 @@ for g in guilds_config:
     main.update(range_name="A2:H51", values=df.values.tolist())
 
     # Batch clear weekly/monthly and then update
-    weekly.batch_clear(["A2:D52"])
-    weekly.update(range_name="A2:D52", values=df_weekly.values.tolist())
-    monthly.batch_clear(["A2:D52"])
-    monthly.update(range_name="A2:D52", values=df_monthly.values.tolist())
+    weekly.batch_clear(["A2:D51"])
+    weekly.update(range_name="A2:D51", values=df_weekly.values.tolist())
+    monthly.batch_clear(["A2:D51"])
+    monthly.update(range_name="A2:D51", values=df_monthly.values.tolist())
 
     # Batch clear Points_weekly, then update
-    points_weekly.batch_clear(["A2:G52"])
-    points_weekly.update(range_name="A2:G52", values=df_weekly_points.values.tolist())
+    points_weekly.batch_clear(["A2:G51"])
+    points_weekly.update(range_name="A2:G51", values=df_weekly_points.values.tolist())
