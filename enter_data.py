@@ -216,3 +216,41 @@ def enter_player_archive(players_to_insert):
     finally:
         if conn:
             conn.close()
+
+
+def enter_tb_data(tb_data):
+    if not tb_data:
+        logger.warning("No TB data to insert")
+        return
+
+    conn = None
+    try:
+        logger.info(
+            "Entering tb data about %s players into the tb_import table...",
+            len(tb_data),
+        )
+        conn = psycopg2.connect(**pg_connection_dict)
+        with conn.cursor() as cur:
+            cur.executemany(
+                "INSERT INTO tb_import "
+                "(nickname, total_territory_points, total_waves_completed, total_missions_attempted, wave_completion_ratio, phases_missed) "
+                "VALUES (%s, %s, %s, %s, %s, %s);",
+                tb_data,
+            )
+            inserted_count = cur.rowcount
+            logger.info("Inserted %s players data", inserted_count)
+            conn.commit()
+            logger.info("Done")
+    except psycopg2.IntegrityError as ie:
+        logger.error(
+            "Data integrity error (duplicate keys, constraint violations): %s", ie
+        )
+        if conn:
+            conn.rollback()
+    except psycopg2.Error as db_error:
+        logger.error("Database error: %s", db_error)
+        if conn:
+            conn.rollback()
+    finally:
+        if conn:
+            conn.close()

@@ -1,6 +1,5 @@
 import json
 import logging.config
-import logging.handlers
 import logging
 from pathlib import Path
 import os
