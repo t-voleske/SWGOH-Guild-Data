@@ -25,9 +25,6 @@ def floatify(x):
     return float(x)
 
 
-# --------------------------------------------------------------------------------------------
-# TO DO: Add support for multiple guilds (spreadsheet needs to be set up separately)
-# --------------------------------------------------------------------------------------------
 # Create gspread object to interact with spreadsheet API
 filepath: str = check_none(
     os.getenv("FILEPATH_CREDENTIALS"),

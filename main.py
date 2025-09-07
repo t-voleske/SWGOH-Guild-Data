@@ -67,6 +67,7 @@ guilds_config = check_none(
 )
 logger.debug("After Import: %s", guilds_config)
 
+
 for g in guilds_config:
     guild = json.dumps(
         post_request(
@@ -107,6 +108,7 @@ for g in guilds_config:
 
     to_add = list(set(nicknameArr) - set(db_nicknames))
     to_remove = list(set(db_nicknames) - set(nicknameArr))
+
     players_to_add = [x for x in playerArr if x.nickname in to_add]
     players_to_remove = [y for y in to_remove if y[1] not in playerArr]
     enterArr = []
@@ -115,11 +117,10 @@ for g in guilds_config:
 
     enter_players(enterArr)
 
-
-logger.info("--players to remove--")
-logger.info(players_to_remove)
-for i in players_to_remove:
-    remove_from_guild(i)
+    logger.info("--players to remove--")
+    logger.info(players_to_remove)
+    for i in players_to_remove:
+        remove_from_guild(i)
 
 # archive players after their guild affiliation was removed
 archive_process()
