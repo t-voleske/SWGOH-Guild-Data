@@ -49,7 +49,7 @@ for g in guilds_config:
     points_weekly = sh.worksheet("Points_weekly")
 
     # Prepare data for Main sheet
-    df = pd.DataFrame(
+    df_main = pd.DataFrame(
         read_players_data(g[0]),
         columns=[
             "nickname",
@@ -62,11 +62,12 @@ for g in guilds_config:
             "days_tickets_lost",
         ],
     )
-    df = df.fillna("")
-    df["average_percent"] = df["average_percent"].map(floatify)
-    df["total_gp"] = df["total_gp"].map(floatify)
-    df["raid_score"] = df["raid_score"].map(floatify)
-    logger.debug(df)
+    df_main = df_main.fillna("")
+    df_main["total_gp"] = df_main["total_gp"].map(floatify)
+    df_main["raid_score"] = df_main["raid_score"].map(floatify)
+    df_main["average_percent"] = df_main["average_percent"].map(floatify)
+
+    logger.debug(df_main)
 
     # Prepare data for weekly ticket sheet
     df_weekly = pd.DataFrame(
@@ -100,7 +101,7 @@ for g in guilds_config:
 
     # Batch clear Main and then update
     main.batch_clear(["A2:H51"])
-    main.update(range_name="A2:H51", values=df.values.tolist())
+    main.update(range_name="A2:H51", values=df_main.values.tolist())
 
     # Batch clear weekly/monthly and then update
     weekly.batch_clear(["A2:D51"])

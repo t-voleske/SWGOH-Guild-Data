@@ -8,11 +8,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger("guild_data_app")
-filepath: str = str(os.getenv("LOGGER_FILEPATH"))
+logger_filepath: str = str(os.getenv("LOGGER_FILEPATH"))
 
 
 def setup_logging():
-    config_file = Path(filepath)
+    config_file = Path(logger_filepath)
     try:
         with open(config_file, encoding="utf-8") as f_in:
             config = json.load(f_in)

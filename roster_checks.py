@@ -129,8 +129,8 @@ for g in guilds_config:
         else None
         for x in read_players_data
     ]
-    logger.info("players:")
-    logger.info(players)
+    logger.debug("players:")
+    logger.debug(players)
     players = [x for x in players if x is not None]
 
     # No update needed for players already zeffo_ready == True

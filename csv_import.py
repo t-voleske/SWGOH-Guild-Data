@@ -1,17 +1,42 @@
-import pandas as pd
 import logging
+from pathlib import Path
+import os
+from datetime import datetime
+from dotenv import load_dotenv
+import pandas as pd
+import numpy as np
 from helper_functions import setup_logging
 from enter_data import enter_tb_data
+from read_data import get_guild_from_nickname
+
+
+load_dotenv()
+csv_import_folder_filepath: str = str(os.getenv("CSV_IMPORT_FOLDER_FILEPATH"))
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
+
+def get_guild_random(input_list: list[list]) -> str:
+    guild_names = []
+    for x in np.random.randint(0, len(input_list), size=10):
+        guild_names.append(get_guild_from_nickname(input_list[x][0]))
+    guild_names_set = set(guild_names)
+    if len(guild_names_set) == 1:
+        return guild_names[0]
+    else:
+        logger.info(
+            "More than one guild recognized from the nicknames in TB data. Did players change guild recently?"
+        )
+        return max(guild_names_set, key=guild_names.count)
+
+
 try:
     tb_data = pd.read_csv(
-        "csv_import/tb_data.csv",
-        encoding="utf-8",  # Handle different encodings
-        sep=",",  # Specify delimiter (auto-detected by default)
-        header=0,  # Row to use as column names (0 = first row)
+        f"{csv_import_folder_filepath}tb_data.csv",
+        encoding="utf-8",
+        sep=",",
+        header=0,
     )
 except FileNotFoundError:
     logger.error("File not found. Check csv_import folder")
@@ -41,7 +66,16 @@ logger.info(summed_data_list)
 
 enter_tb_data(summed_data_list)
 
+timestamp = datetime.now().strftime("%d-%m-%Y")
+guild = get_guild_random(summed_data_list)
+logger.info("The guild is: %s and the date is %s", guild, timestamp)
 
-# To do: Handle renaming of csv file to indicate it processed
-# tb_data.csv -> tb_data_imported_{date}_{guild_name}
-# get guild_id from join of data inserted in line 42 with players table -> get guild name from guilds table with guild_id
+try:
+    Path(f"{csv_import_folder_filepath}tb_data.csv").rename(
+        f"{csv_import_folder_filepath}tb_data_imported_{timestamp}_{guild}.csv"
+    )
+    logger.info("File renamed successfully")
+except FileNotFoundError:
+    logger.error("File not found")
+except Exception as e:
+    logger.error("Error: %s", e)

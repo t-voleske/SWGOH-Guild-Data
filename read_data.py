@@ -293,3 +293,63 @@ def read_member_points(guild_id):
     finally:
         if conn:
             conn.close()
+
+
+def get_guild_from_nickname(nickname: str):
+    conn = None
+    try:
+        logger.info("Getting guild from nickname...")
+        conn = psycopg2.connect(**pg_connection_dict)
+
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT guild_name "
+                "FROM guild "
+                "WHERE guild_id = "
+                "(SELECT guild_id FROM players WHERE nickname = %s);",
+                (nickname,),
+            )
+            rows = cur.fetchall()
+            if rows:
+                return rows[0][0]
+            else:
+                return ""
+
+    except psycopg2.Error as e:
+        logger.debug("Connection failed: %s", e)
+    finally:
+        if conn:
+            conn.close()
+
+
+def get_last_tb_data(guild_id: str):
+    conn = None
+    try:
+        logger.info("Getting data of latest TB for guild %s...", guild_id)
+        conn = psycopg2.connect(**pg_connection_dict)
+
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT gm.nickname AS nickname, "
+                "tbi.total_territory_points AS total_territory_points, "
+                "tbi.total_waves_completed, tbi.total_missions_attempted, "
+                "tbi.wave_completion_ratio AS wave_completion_ratio, "
+                "tbi.phases_missed AS phases_missed, "
+                "tbi.created_at AS created_at "
+                "FROM guild_members gm "
+                "LEFT JOIN players p "
+                "ON gm.player_id = p.player_id "
+                "LEFT JOIN tb_import tbi "
+                "ON gm.nickname = tbi.nickname "
+                "WHERE p.guild_id = %s AND "
+                "tbi.created_at = (SELECT MAX(created_at) FROM tb_import);",
+                (guild_id,),
+            )
+            rows = cur.fetchall()
+            return rows
+
+    except psycopg2.Error as e:
+        logger.debug("Connection failed: %s", e)
+    finally:
+        if conn:
+            conn.close()
