@@ -9,7 +9,7 @@ from archive_players import archive_process
 from enter_data import enter_players
 from read_data import read_guild, read_players
 from update_data import remove_from_guild, update_activity, updateGP
-from helper_functions import check_none, setup_logging
+from helper_functions import check_none_str, check_none_list, setup_logging
 import logging
 
 logger = logging.getLogger("guild_data_app")
@@ -58,11 +58,11 @@ class Player:
 
 # Load environment variables from .env file
 load_dotenv()
-guild_url: str = check_none(
+guild_url: str = check_none_str(
     os.getenv("GUILD_URL"), "Error: Check .env file. GUILD_URL should not be None"
 )
 
-guilds_config = check_none(
+guilds_config = check_none_list(
     read_guild(), "guilds should not be None. Check read_guilds function"
 )
 logger.debug("After Import: %s", guilds_config)
@@ -100,7 +100,7 @@ for g in guilds_config:
         nicknameArr.append(m["playerName"])
 
     db_nicknames = []
-    db_players = check_none(
+    db_players = check_none_list(
         read_players(g[0]), "Players should not be None. Check read_players function"
     )
     for n in db_players:

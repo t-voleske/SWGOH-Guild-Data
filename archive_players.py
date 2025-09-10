@@ -1,7 +1,7 @@
 from read_data import read_players_raw, read_guild
 from enter_data import enter_player_archive
 from remove_data import remove_from_players
-from helper_functions import check_none
+from helper_functions import check_none_list
 import logging
 from helper_functions import setup_logging
 
@@ -10,11 +10,11 @@ logger = logging.getLogger("guild_data_app")
 
 def archive_process():
     setup_logging()
-    guilds_config = check_none(
+    guilds_config = check_none_list(
         read_guild(), "Error: read_guild function should not return None"
     )
 
-    raw_players_data = check_none(
+    raw_players_data = check_none_list(
         read_players_raw(), "Error: read_players_raw function should not return None"
     )
 

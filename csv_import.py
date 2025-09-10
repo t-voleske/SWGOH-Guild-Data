@@ -1,6 +1,7 @@
 import logging
 from pathlib import Path
 import os
+import sys
 from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
@@ -26,7 +27,8 @@ def get_guild_random(input_list: list[list]) -> str:
         return guild_names[0]
     else:
         logger.info(
-            "More than one guild recognized from the nicknames in TB data. Did players change guild recently?"
+            "More than one guild recognized from "
+            "the nicknames in TB data. Did players change guild recently?"
         )
         return max(guild_names_set, key=guild_names.count)
 
@@ -40,6 +42,7 @@ try:
     )
 except FileNotFoundError:
     logger.error("File not found. Check csv_import folder")
+    sys.exit()
 except pd.errors.EmptyDataError:
     logger.error("CSV file is empty")
 except pd.errors.ParserError:
@@ -77,5 +80,3 @@ try:
     logger.info("File renamed successfully")
 except FileNotFoundError:
     logger.error("File not found")
-except Exception as e:
-    logger.error("Error: %s", e)

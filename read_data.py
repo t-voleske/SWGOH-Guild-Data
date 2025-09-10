@@ -322,7 +322,7 @@ def get_guild_from_nickname(nickname: str):
             conn.close()
 
 
-def get_last_tb_data(guild_id: str):
+def get_last_tb_data(guild_id: str) -> list | None:
     conn = None
     try:
         logger.info("Getting data of latest TB for guild %s...", guild_id)
@@ -346,8 +346,15 @@ def get_last_tb_data(guild_id: str):
                 (guild_id,),
             )
             rows = cur.fetchall()
+            if not rows:
+                raise psycopg2.DataError
             return rows
-
+    except psycopg2.DataError as e:
+        logger.error(e)
+        logger.debug(
+            "Query returned no data. Check if there is data in tb_import for %s",
+            guild_id,
+        )
     except psycopg2.Error as e:
         logger.debug("Connection failed: %s", e)
     finally:

@@ -6,7 +6,7 @@ from read_data import read_players, read_roster_check, read_guild
 from update_data import updateRosterChecks
 from api_request import post_request
 from enter_data import enter_player_check
-from helper_functions import check_none, is_list_or_tuple_instance, setup_logging
+from helper_functions import check_none_str, check_none_list, is_list_or_tuple_instance, setup_logging
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()
@@ -14,10 +14,10 @@ setup_logging()
 
 load_dotenv()
 # get guild and player interfaces for comlink
-guild_url: str = check_none(
+guild_url: str = check_none_str(
     os.getenv("PASS"), "Error: Check .env file. GUILD_URL should not be None"
 )
-player_url: str = check_none(
+player_url: str = check_none_str(
     os.getenv("PLAYER_URL"), "Error: Check .env file. GUILD_URL should not be None"
 )
 
@@ -106,26 +106,26 @@ def check_roster(p):
         return check
 
 
-roster_check_data = check_none(
+roster_check_data = check_none_list(
     read_roster_check(),
     "roster_check_data should not be None. Check read_roster_check function",
 )
 
 
-guilds_config = check_none(
+guilds_config = check_none_list(
     read_guild(), "read_guild should not be None! Check read_guild function"
 )
 logger.debug("Guilds config: %s", guilds_config)
 
 for g in guilds_config:
-    read_players_data = check_none(
+    read_players_data = check_none_list(
         read_players(g[0]),
         "read_players data should not be None. Check read_players function",
     )
 
     players = [
-        check_none(is_list_or_tuple_instance(x), "Cannot be None")[0]
-        if check_none(is_list_or_tuple_instance(x), "Cannot be None")[5] == g[0]
+        check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[0]
+        if check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[5] == g[0]
         else None
         for x in read_players_data
     ]
@@ -137,13 +137,13 @@ for g in guilds_config:
     already_zeffo_ready = [
         y[0]
         for y in roster_check_data
-        if check_none(is_list_or_tuple_instance(y), "Canno be None")[6]
+        if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6]
     ]
     # filter for players that are zeffo_ready == False, then map entry to their player_id
     players_to_update = [
         y[0]
         for y in roster_check_data
-        if check_none(is_list_or_tuple_instance(y), "Canno be None")[6] is False
+        if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6] is False
     ]
     logger.info("players_to_update: %s", players_to_update)
 

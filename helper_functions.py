@@ -40,7 +40,14 @@ def get_env(key: str) -> str:
     return value
 
 
-def check_none(possible_none_value, error_str: str) -> str:
+def check_none_str(possible_none_value, error_str: str) -> str:
+    if possible_none_value is None:
+        logger.exception(error_str)
+        raise ValueError(error_str)
+    return possible_none_value
+
+
+def check_none_list(possible_none_value, error_str: str) -> list:
     if possible_none_value is None:
         logger.exception(error_str)
         raise ValueError(error_str)

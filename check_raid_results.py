@@ -4,18 +4,18 @@ from dotenv import load_dotenv
 from read_data import read_guild, read_players
 from update_data import updateLastRaidResult
 from api_request import post_request
-from helper_functions import check_none, setup_logging
+from helper_functions import check_none_str, check_none_list, setup_logging
 import logging
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 load_dotenv()
-guild_url: str = check_none(
+guild_url: str = check_none_str(
     os.getenv("GUILD_URL"), "Error: Check .env file. GUILD_URL should not be None"
 )
 
-guilds_config = check_none(
+guilds_config = check_none_list(
     read_guild(), "guilds should not be None. Check read_guilds function"
 )
 logger.debug("Guilds_config: %s", guilds_config)
@@ -38,7 +38,7 @@ for g in guilds_config:
     logger.debug("raid_results: %s", raid_results)
 
     logger.info("read_players(g[0]): %s", read_players(g[0]))
-    players = check_none(
+    players = check_none_list(
         read_players(g[0]), "players should not be None. Check read_players function"
     )
     for e in players:

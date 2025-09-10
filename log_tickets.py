@@ -5,7 +5,7 @@ from read_data import read_guild
 from api_request import post_request
 from enter_data import enter_tickets
 from datetime import datetime, timedelta
-from helper_functions import check_none, setup_logging
+from helper_functions import check_none_list, check_none_str, setup_logging
 import logging
 
 logger = logging.getLogger("guild_data_app")
@@ -23,11 +23,11 @@ def is_around_reset_time(reset_time):
 
 
 load_dotenv()
-guild_url = check_none(
+guild_url = check_none_str(
     os.getenv("GUILD_URL"), "Error: Check .env file. GUILD_URL should not be None"
 )  # url for comlink/guild interface
 
-guilds_config = check_none(
+guilds_config = check_none_list(
     read_guild(), "guilds should not be None. Check read_guilds function"
 )
 
