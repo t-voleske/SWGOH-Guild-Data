@@ -342,7 +342,8 @@ def get_last_tb_data(guild_id: str) -> list | None:
                 "LEFT JOIN tb_import tbi "
                 "ON gm.nickname = tbi.nickname "
                 "WHERE p.guild_id = %s AND "
-                "tbi.created_at = (SELECT MAX(created_at) FROM tb_import);",
+                "tbi.created_at = (SELECT MAX(created_at) FROM tb_import) "
+                "ORDER BY wave_completion_ratio;",
                 (guild_id,),
             )
             rows = cur.fetchall()

@@ -1,4 +1,23 @@
-[DEBUG|spreadsheet_operations|L38] 2025-09-10T19:28:21+0200:             nickname  tickets_lost  days_tickets_lost  full_days_lost
+[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:02+0200: Writing to sheet Tickets_weekly for guild ScaredOfNuffin in range A2:D51
+[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:02+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:02+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:03+0200:           nickname  tickets_lost  days_tickets_lost  full_days_lost
+43  Masterscott149         500.0                1.0             0.0
+44           Ganon         520.0                1.0             0.0
+45  Epicbannana105        1200.0                2.0             2.0
+46  CTFivesFan5555         600.0                1.0             1.0
+47       Cero Kurn         420.0                1.0             0.0
+48     BahamutZero         240.0                1.0             0.0
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Tickets_weekly%27%21A2%3AD51?valueInputOption=RAW HTTP/1.1" 200 None
+[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:03+0200: Writing to sheet Tickets_monthly for guild ScaredOfNuffin in range A2:D51
+[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:03+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:04+0200:             nickname  tickets_lost  days_tickets_lost  full_days_lost
 36               TSU         204.0                1.0             0.0
 37        ShadyGrady         300.0                1.0             0.0
 38             osong         552.0                1.0             0.0
@@ -12,14 +31,14 @@
 46         BobaClaus         600.0                1.0             1.0
 47       BahamutZero         840.0                2.0             1.0
 48     Alew Drushnov        2400.0                4.0             4.0
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:21+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:22+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Tickets_monthly%27%21A2%3AD51?valueInputOption=RAW HTTP/1.1" 200 None
-[INFO|spreadsheet_operations|L24] 2025-09-10T19:28:22+0200: Writing to sheet Points_weekly for guild ScaredOfNuffin in range A2:G51
-[INFO|spreadsheet_operations|L30] 2025-09-10T19:28:22+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:22+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:22+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:22+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|spreadsheet_operations|L38] 2025-09-10T19:28:22+0200:           nickname  last_activity_p  average_percent_p  zero_raid_score  zeffo_ready  tickets_weekly  total_points
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:05+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Tickets_monthly%27%21A2%3AD51?valueInputOption=RAW HTTP/1.1" 200 None
+[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:05+0200: Writing to sheet Points_weekly for guild ScaredOfNuffin in range A2:G51
+[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:05+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:05+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:06+0200:           nickname  last_activity_p  average_percent_p  zero_raid_score  zeffo_ready  tickets_weekly  total_points
 0           tofoxx                0                  0                0            3               0             3
 1           Sluice                0                 -1                0            0               0            -1
 2       ShadyGrady                0                 -1                0            0               0            -1
@@ -47,10 +66,7 @@
 24     BahamutZero                0                 -1                0            0              -1            -2
 25   AffeohneHaare                0                 -1                0            0               0            -1
 26   AADarthMalgus                0                 -1                0            0               0            -1
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:23+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:23+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Points_weekly%27%21A2%3AG51?valueInputOption=RAW HTTP/1.1" 200 None
-[INFO|spreadsheet_operations|L24] 2025-09-10T19:28:23+0200: Writing to sheet Last TB Data for guild ScaredOfNuffin in range A2:G51
-[INFO|spreadsheet_operations|L30] 2025-09-10T19:28:23+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:24+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:24+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T19:28:24+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Points_weekly%27%21A2%3AG51?valueInputOption=RAW HTTP/1.1" 200 None
+[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:06+0200: Writing to sheet Last TB Data for guild ScaredOfNuffin in range A2:G51
+[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:06+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
