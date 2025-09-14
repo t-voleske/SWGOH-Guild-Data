@@ -10,22 +10,16 @@ from read_data import (
     read_tickets_monthly,
     read_member_points,
     read_guild,
-    get_last_tb_data,
+    get_last_tb_data_ordered,
 )
-from spreadsheet_operations import write_to_sheet
-from helper_functions import check_none_str, check_none_list, setup_logging
+from spreadsheet_operations import write_to_sheet, check_order
+from helper_functions import check_none_str, check_none_list, setup_logging, floatify
 import logging
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 load_dotenv()
-
-
-def floatify(x):
-    if x == "":
-        return "-"
-    return float(x)
 
 
 # Create gspread object to interact with spreadsheet API
@@ -40,11 +34,16 @@ guilds_config = check_none_list(
 )
 logger.debug("After Import: %s", guilds_config)
 
+main_sheet = "Main"
+tickets_weekly_sheet = "Tickets_weekly"
+tickets_monthly_sheet = "Tickets_monthly"
+points_weekly_sheet = "Points_weekly"
+last_tb_data_sheet = "Last TB Data"
 
 for g in guilds_config:
     try:
         df_main = pd.DataFrame(
-            read_players_data(g[0]),
+            read_players_data(g[0], check_order(g, main_sheet)),
             columns=[
                 "nickname",
                 "last_activity",
@@ -65,19 +64,19 @@ for g in guilds_config:
 
     try:
         df_weekly = pd.DataFrame(
-            read_tickets_weekly(g[0]),
+            read_tickets_weekly(g[0], check_order(g, tickets_weekly_sheet)),
             columns=["nickname", "tickets_lost", "days_tickets_lost", "full_days_lost"],
         )
         df_weekly = df_weekly.dropna()
 
         df_monthly = pd.DataFrame(
-            read_tickets_monthly(g[0]),
+            read_tickets_monthly(g[0], check_order(g, tickets_monthly_sheet)),
             columns=["nickname", "tickets_lost", "days_tickets_lost", "full_days_lost"],
         )
         df_monthly = df_monthly.dropna()
 
         df_weekly_points = pd.DataFrame(
-            read_member_points(g[0]),
+            read_member_points(g[0], check_order(g, points_weekly_sheet)),
             columns=[
                 "player_id",
                 "nickname",
@@ -99,7 +98,7 @@ for g in guilds_config:
 
     try:
         df_tb = pd.DataFrame(
-            get_last_tb_data(g[0]),
+            get_last_tb_data_ordered(g[0], check_order(g, last_tb_data_sheet)),
             columns=[
                 "nickname",
                 "total_territory_points",

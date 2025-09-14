@@ -104,7 +104,7 @@ def read_roster_check():
             conn.close()
 
 
-def read_tickets_weekly(guild_id):
+def read_tickets_weekly(guild_id: str, order_str: str):
     conn = None
     try:
         logger.info("Reading from tickets_aggregated_weekly view...")
@@ -118,7 +118,8 @@ def read_tickets_weekly(guild_id):
                 "FROM players p "
                 "LEFT JOIN tickets_aggregated_weekly taw "
                 "ON p.nickname = taw.nickname "
-                "WHERE guild_id = %s ORDER BY nickname DESC;",
+                "WHERE guild_id = %s "
+                f"ORDER BY {order_str};",
                 (guild_id,),
             )
             rows = cur.fetchall()
@@ -131,7 +132,7 @@ def read_tickets_weekly(guild_id):
             conn.close()
 
 
-def read_tickets_monthly(guild_id):
+def read_tickets_monthly(guild_id: str, order_str: str):
     conn = None
     try:
         logger.info("Reading from tickets_aggregated_monthly view...")
@@ -145,7 +146,8 @@ def read_tickets_monthly(guild_id):
                 "FROM players p "
                 "LEFT JOIN tickets_aggregated_monthly tam "
                 "ON p.nickname = tam.nickname "
-                "WHERE guild_id = %s ORDER BY nickname DESC;",
+                "WHERE guild_id = %s "
+                f"ORDER BY {order_str};",
                 (guild_id,),
             )
             rows = cur.fetchall()
@@ -219,7 +221,7 @@ def read_last_login():
             conn.close()
 
 
-def read_players_data(guild_id):
+def read_players_data(guild_id: str, order_str: str):
     conn = None
     try:
         logger.info("Reading from players_data table ...")
@@ -231,7 +233,7 @@ def read_players_data(guild_id):
                 "* FROM players_data "
                 "WHERE nickname IN "
                 "(SELECT nickname FROM players WHERE guild_id = %s) "
-                "ORDER BY nickname DESC;",
+                f"ORDER BY {order_str};",
                 (guild_id,),
             )
             rows = cur.fetchall()
@@ -270,7 +272,7 @@ def read_raid_performance_by_guild(guild_id):
             conn.close()
 
 
-def read_member_points(guild_id):
+def read_member_points(guild_id: str, order_str: str):
     conn = None
     try:
         logger.info("Reading member_points view...")
@@ -282,7 +284,7 @@ def read_member_points(guild_id):
                 "* FROM member_points "
                 "WHERE nickname IN "
                 "(SELECT nickname FROM players WHERE guild_id = %s) "
-                "ORDER BY nickname DESC;",
+                f"ORDER BY {order_str};",
                 (guild_id,),
             )
             rows = cur.fetchall()
@@ -343,7 +345,49 @@ def get_last_tb_data(guild_id: str) -> list | None:
                 "ON gm.nickname = tbi.nickname "
                 "WHERE p.guild_id = %s AND "
                 "tbi.created_at = (SELECT MAX(created_at) FROM tb_import) "
-                "ORDER BY wave_completion_ratio;",
+                "ORDER BY nickname DESC;",
+                (guild_id,),
+            )
+            rows = cur.fetchall()
+            if not rows:
+                raise psycopg2.DataError
+            return rows
+    except psycopg2.DataError as e:
+        logger.error(e)
+        logger.debug(
+            "Query returned no data. Check if there is data in tb_import for %s",
+            guild_id,
+        )
+    except psycopg2.Error as e:
+        logger.debug("Connection failed: %s", e)
+    finally:
+        if conn:
+            conn.close()
+
+
+def get_last_tb_data_ordered(guild_id: str, order_str: str) -> list | None:
+    conn = None
+    try:
+        logger.info("Getting data of latest TB for guild %s...", guild_id)
+        conn = psycopg2.connect(**pg_connection_dict)
+
+        with conn.cursor() as cur:
+            cur.execute(
+                "SELECT gm.nickname AS nickname, "
+                "tbi.total_territory_points AS total_territory_points, "
+                "tbi.total_waves_completed AS total_waves_completed, "
+                "tbi.total_missions_attempted AS total_missions_attempted, "
+                "tbi.wave_completion_ratio AS wave_completion_ratio, "
+                "tbi.phases_missed AS phases_missed, "
+                "tbi.created_at AS created_at "
+                "FROM guild_members gm "
+                "LEFT JOIN players p "
+                "ON gm.player_id = p.player_id "
+                "LEFT JOIN tb_import tbi "
+                "ON gm.nickname = tbi.nickname "
+                "WHERE p.guild_id = %s AND "
+                "tbi.created_at = (SELECT MAX(created_at) FROM tb_import) "
+                f"ORDER BY {order_str};",
                 (guild_id,),
             )
             rows = cur.fetchall()

@@ -1,72 +1,85 @@
-[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:02+0200: Writing to sheet Tickets_weekly for guild ScaredOfNuffin in range A2:D51
-[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:02+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:02+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:03+0200:           nickname  tickets_lost  days_tickets_lost  full_days_lost
-43  Masterscott149         500.0                1.0             0.0
-44           Ganon         520.0                1.0             0.0
-45  Epicbannana105        1200.0                2.0             2.0
-46  CTFivesFan5555         600.0                1.0             1.0
-47       Cero Kurn         420.0                1.0             0.0
-48     BahamutZero         240.0                1.0             0.0
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:03+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Tickets_weekly%27%21A2%3AD51?valueInputOption=RAW HTTP/1.1" 200 None
-[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:03+0200: Writing to sheet Tickets_monthly for guild ScaredOfNuffin in range A2:D51
-[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:03+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:04+0200:             nickname  tickets_lost  days_tickets_lost  full_days_lost
-36               TSU         204.0                1.0             0.0
-37        ShadyGrady         300.0                1.0             0.0
-38             osong         552.0                1.0             0.0
-39    Masterscott149         500.0                1.0             0.0
-40  Jarre Blastereth         312.0                1.0             0.0
-41             Ganon         536.0                2.0             0.0
-42         Excal1bur        1360.0                3.0             2.0
-43    Epicbannana105        1346.0                5.0             2.0
-44    CTFivesFan5555        1272.0                4.0             2.0
-45         Cero Kurn         420.0                1.0             0.0
-46         BobaClaus         600.0                1.0             1.0
-47       BahamutZero         840.0                2.0             1.0
-48     Alew Drushnov        2400.0                4.0             4.0
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:04+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:05+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Tickets_monthly%27%21A2%3AD51?valueInputOption=RAW HTTP/1.1" 200 None
-[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:05+0200: Writing to sheet Points_weekly for guild ScaredOfNuffin in range A2:G51
-[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:05+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:05+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22SON_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE?includeGridData=false HTTP/1.1" 200 None
-[DEBUG|spreadsheet_operations|L38] 2025-09-10T20:32:06+0200:           nickname  last_activity_p  average_percent_p  zero_raid_score  zeffo_ready  tickets_weekly  total_points
-0           tofoxx                0                  0                0            3               0             3
-1           Sluice                0                 -1                0            0               0            -1
-2       ShadyGrady                0                 -1                0            0               0            -1
-3            Saint                0                  0                0            3               0             3
-4          Peveral                0                 -1                0            0               0            -1
-5            osong                0                 -1                0            0               0            -1
-6      Ors Carrino                0                 -1                0            0               0            -1
-7   Onemailegaming                0                 -1                0            0               0            -1
-8      Nema Ghyron                0                 -1                0            0               0            -1
-9            Mölli                0                  0                0            3               0             3
-10    Meetra Surik                0                  0                0            3               0             3
-11  Masterscott149                0                  0                0            0              -1            -1
-12     lilChemoBoy                0                 -1                0            0               0            -1
-13         Jimwode                0                  0                0            3               0             3
-14          Jcub94                0                 -1                0            0               0            -1
-15    GeorgeSlatch                0                 -1                0            0               0            -1
-16           Ganon                0                 -1                0            0              -1            -2
-17       Excal1bur                0                 -1                0            0               0            -1
-18  Epicbannana105                0                 -1                0            0              -2            -3
-19   DarthRavagerr                0                 -1                0            0               0            -1
-20        Damokles                0                 -1                0            0               0            -1
-21  CTFivesFan5555                0                  0                0            0              -1            -1
-22       Cero Kurn                0                  0                0            0              -1            -1
-23       BobaClaus                0                 -1                0            0               0            -1
-24     BahamutZero                0                 -1                0            0              -1            -2
-25   AffeohneHaare                0                 -1                0            0               0            -1
-26   AADarthMalgus                0                 -1                0            0               0            -1
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values:batchClear HTTP/1.1" 200 None
-[DEBUG|connectionpool|L544] 2025-09-10T20:32:06+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE/values/%27Points_weekly%27%21A2%3AG51?valueInputOption=RAW HTTP/1.1" 200 None
-[INFO|spreadsheet_operations|L24] 2025-09-10T20:32:06+0200: Writing to sheet Last TB Data for guild ScaredOfNuffin in range A2:G51
-[INFO|spreadsheet_operations|L30] 2025-09-10T20:32:06+0200: ('Xyw6K1R1SOazMbS94TX7fw', 'ScaredOfNuffin', datetime.time(2, 30), 'SON_Guild_Data', '1jXyjvFvsXNXZwDy392Sl8h0iPtqWx-ZYhoD1emduKRE')
+[DEBUG|spreadsheet_operations|L115] 2025-09-14T17:14:41+0200:                nickname  last_activity    total_gp  raid_score average_percent  zeffo_ready tickets_lost_week days_tickets_lost
+0                  Alec        3 h ago   5759778.0   1050000.0            46.1        False                                    
+1             AlphySoup        9 h ago   6279425.0   1445000.0            63.5        False                                    
+2                Arthas        2 h ago   9244035.0   4050000.0           177.9        False                                    
+3           Azile Quinn        5 h ago   7914047.0   2100000.0            92.3        False                                    
+4             Bergy0013        1 h ago  12438082.0   2265000.0            99.5         True              26.0               1.0
+5          BiggWhoopsie        6 h ago   7713799.0   1510000.0            66.3        False                                    
+6               Bittman        1 h ago   4071119.0   1200000.0            52.7        False                                    
+7   Catalina Wine Mixer        8 h ago   9503510.0    750000.0            32.9        False            1030.0               3.0
+8        ChrisSkywalker        1 h ago  11934551.0   1102500.0            48.4         True                                    
+9        CommanderFordo       11 h ago   6608253.0    900000.0            39.5        False                                    
+10              Darkape        2 h ago   5072222.0    300000.0            13.2        False                                    
+11          DarthCycron        2 h ago   7929186.0   1620000.0            71.2        False                                    
+12           DarthNokoi       12 h ago   7632136.0   1130000.0            49.6        False                                    
+13       DarthRevan2215  under 1 h ago   8410757.0   1200000.0            52.7        False             600.0               1.0
+14           DoomSlayer       18 h ago  13774026.0  10732500.0           471.5        False            1200.0               2.0
+15         Do or do not       12 h ago   9412598.0   1950000.0            85.7        False                                    
+16       Dub Wingbender        7 h ago  12855305.0   6600000.0           289.9         True                                    
+17        EmperorArthas  under 1 h ago  12570037.0   6450000.0           283.3         True                                    
+18                  fam        8 h ago   8080207.0   1500000.0            65.9        False                                    
+19       FLANNEL SHIRTS       12 h ago  10631178.0   1500000.0            65.9        False                                    
+20            Gareth517       11 h ago  11272368.0   3000000.0           131.8        False                                    
+21        Giraffes12310        7 h ago  11499279.0   1090000.0            47.9        False              70.0               1.0
+22             Gon Barr        1 h ago   6236565.0   1215000.0            53.4        False                                    
+23          GypsyyQuinn       10 h ago   7472740.0   1200000.0            52.7        False                                    
+24             iDeadeye       13 h ago   7499985.0   1120000.0            49.2        False             108.0               1.0
+25              Jacoben  under 1 h ago   6766083.0   2550000.0           112.0        False                                    
+26            Jensaarai        7 h ago   6796997.0   1200000.0            52.7        False                                    
+27            JimboFett       19 h ago  12549579.0   1110000.0            48.8        False            1200.0               2.0
+28             Kempy244       10 h ago   8871728.0     27500.0             1.2         True                                    
+29       Knights of Ren  under 1 h ago  11635395.0   1340000.0            58.9        False                                    
+30            Okiehomie  under 1 h ago   7275397.0   1200000.0            52.7        False                                    
+31                Perry        8 h ago  10828504.0           -               -        False            1200.0               2.0
+32           PrinceofPT        3 h ago   5428707.0    900000.0            39.5        False                                    
+33           PunkFalcon        1 h ago   9579679.0   2400000.0           105.4         True                                    
+34                Rainz        6 h ago   6232050.0   1200000.0            52.7        False                                    
+35           RavenQuinn        5 h ago  13287917.0  10650000.0           467.8         True                                    
+36              Rengoku       10 h ago   5564279.0    900000.0            39.5        False             388.0               1.0
+37         Revann Quinn        5 h ago   8798398.0   2400000.0           105.4        False                                    
+38            Riceology  under 1 h ago  12987099.0   5100000.0           224.0        False                                    
+39                 Rush  under 1 h ago   9789391.0   2700000.0           118.6        False                                    
+40          SarlaccJack        2 h ago  11159456.0   2400000.0           105.4        False                                    
+41            SexyJabba        1 h ago   6348751.0   1120000.0            49.2        False                                    
+42          Sibil Quinn        3 h ago  13337371.0   7350000.0           322.9         True                                    
+43                Siebs  under 1 h ago  10342894.0   2655000.0           116.6        False             280.0               1.0
+44         Skywalker768  under 1 h ago   3840373.0   2250000.0            98.8        False                                    
+45            Theopip95        1 h ago   8556324.0   1650000.0            72.5        False                                    
+46          Uñdērgėãręd  under 1 h ago   6174421.0   1200000.0            52.7        False                                    
+47               Varrus  under 1 h ago   8896846.0   2032500.0            89.3        False                                    
+48        Vilkon Saetul       10 h ago  10918232.0   1290000.0            56.7        False                                    
+49           Zuri Quinn       17 h ago   7913640.0   1215000.0            53.4        False                                    
+[DEBUG|connectionpool|L544] 2025-09-14T17:14:41+0200: https://sheets.googleapis.com:443 "POST /v4/spreadsheets/1KYEYI5ZyfyEu8X4928sMkuZhYfO3_20gQZUR3xLlUTI/values:batchClear HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-14T17:14:41+0200: https://sheets.googleapis.com:443 "PUT /v4/spreadsheets/1KYEYI5ZyfyEu8X4928sMkuZhYfO3_20gQZUR3xLlUTI/values/%27Main%27%21A2%3AH51?valueInputOption=RAW HTTP/1.1" 200 None
+[INFO|spreadsheet_operations|L81] 2025-09-14T17:14:41+0200: Data is ordered by ASC 
+[DEBUG|spreadsheet_operations|L82] 2025-09-14T17:14:41+0200: Worksheet Dataframe:
+[DEBUG|spreadsheet_operations|L83] 2025-09-14T17:14:41+0200:                  Siebs   280  1  0
+0              Rengoku   388  1  0
+1                Perry  1200  2  2
+2            JimboFett  1200  2  2
+3             iDeadeye   108  1  0
+4        Giraffes12310    70  1  0
+5           DoomSlayer  1200  2  2
+6       DarthRevan2215   600  1  1
+7  Catalina Wine Mixer  1030  3  1
+8            Bergy0013    26  1  0
+[DEBUG|spreadsheet_operations|L84] 2025-09-14T17:14:41+0200: 
+ Database Dataframe:
+[DEBUG|spreadsheet_operations|L85] 2025-09-14T17:14:41+0200:               nickname  tickets_lost  days_tickets_lost  full_days_lost
+0            Bergy0013          26.0                1.0             0.0
+1  Catalina Wine Mixer        1030.0                3.0             1.0
+2       DarthRevan2215         600.0                1.0             1.0
+3           DoomSlayer        1200.0                2.0             2.0
+4        Giraffes12310          70.0                1.0             0.0
+5             iDeadeye         108.0                1.0             0.0
+6            JimboFett        1200.0                2.0             2.0
+7                Perry        1200.0                2.0             2.0
+8              Rengoku         388.0                1.0             0.0
+9                Siebs         280.0                1.0             0.0
+[INFO|spreadsheet_operations|L88] 2025-09-14T17:14:41+0200: 
+ The data is equal: False
+[INFO|spreadsheet_operations|L104] 2025-09-14T17:14:41+0200: Writing to sheet Tickets_weekly for guild Revenge_of_Mandalore in range A2:D51
+[INFO|spreadsheet_operations|L110] 2025-09-14T17:14:41+0200: ('BloH26UDTSqxarIKNcUPsg', 'Revenge_of_Mandalore', datetime.time(0, 30), 'ROM_Guild_Data', '1KYEYI5ZyfyEu8X4928sMkuZhYfO3_20gQZUR3xLlUTI')
+[DEBUG|connectionpool|L544] 2025-09-14T17:14:42+0200: https://www.googleapis.com:443 "GET /drive/v3/files?q=mimeType%3D%22application%2Fvnd.google-apps.spreadsheet%22+and+name+%3D+%22ROM_Guild_Data%22&pageSize=1000&supportsAllDrives=True&includeItemsFromAllDrives=True&fields=kind%2CnextPageToken%2Cfiles%28id%2Cname%2CcreatedTime%2CmodifiedTime%29 HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-14T17:14:42+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1KYEYI5ZyfyEu8X4928sMkuZhYfO3_20gQZUR3xLlUTI?includeGridData=false HTTP/1.1" 200 None
+[DEBUG|connectionpool|L544] 2025-09-14T17:14:42+0200: https://sheets.googleapis.com:443 "GET /v4/spreadsheets/1KYEYI5ZyfyEu8X4928sMkuZhYfO3_20gQZUR3xLlUTI?includeGridData=false HTTP/1.1" 200 None
