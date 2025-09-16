@@ -5,22 +5,25 @@ from src.helper_functions import get_env, setup_logging
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
-password: str = get_env("PASS")
-host: str = get_env("HOST")
-user: str = get_env("USER")
-db_name: str = get_env("DBNAME")
-port: int = int(get_env("PORT"))
+def setup_connection():
+    password: str = get_env("PASS")
+    host: str = get_env("HOST")
+    user: str = get_env("USER")
+    db_name: str = get_env("DBNAME")
+    port: int = int(get_env("PORT"))
 
-pg_connection_dict = {
-    "dbname": db_name,
-    "user": user,
-    "password": password,
-    "port": port,
-    "host": host,
-}
+    connection_dict = {
+        "dbname": db_name,
+        "user": user,
+        "password": password,
+        "port": port,
+        "host": host,
+    }
+    return connection_dict
 
 
 def remove_from_guild(player_id: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         # read the connection parameters
@@ -56,6 +59,7 @@ def remove_from_guild(player_id: str):
 
 
 def update_activity(activity_time, player_id: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         # read the connection parameters
@@ -91,6 +95,7 @@ def update_activity(activity_time, player_id: str):
 
 
 def updateGP(gp, player_id: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         # read the connection parameters
@@ -126,6 +131,7 @@ def updateGP(gp, player_id: str):
 
 
 def updateLastRaidResult(last_raid_result, player_id: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         # read the connection parameters
@@ -161,6 +167,7 @@ def updateLastRaidResult(last_raid_result, player_id: str):
 
 
 def updateRosterChecks(player_checks):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         # read the connection parameters

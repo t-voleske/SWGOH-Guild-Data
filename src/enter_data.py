@@ -6,22 +6,25 @@ logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 
-password: str = get_env("PASS")
-host: str = get_env("HOST")
-user: str = get_env("USER")
-db_name: str = get_env("DBNAME")
-port: int = int(get_env("PORT"))
+def setup_connection():
+    password: str = get_env("PASS")
+    host: str = get_env("HOST")
+    user: str = get_env("USER")
+    db_name: str = get_env("DBNAME")
+    port: int = int(get_env("PORT"))
 
-pg_connection_dict = {
-    "dbname": db_name,
-    "user": user,
-    "password": password,
-    "port": port,
-    "host": host,
-}
+    connection_dict = {
+        "dbname": db_name,
+        "user": user,
+        "password": password,
+        "port": port,
+        "host": host,
+    }
+    return connection_dict
 
 
 def enter_players(players_to_insert):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Entering new player data into players table...")
@@ -54,6 +57,7 @@ def enter_players(players_to_insert):
 
 
 def enter_gp_logs(gp_logs):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Logging player GP ...")
@@ -86,6 +90,7 @@ def enter_gp_logs(gp_logs):
 
 
 def enter_player_check(player_checks):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Entering player checks into player_roster_checks table ...")
@@ -118,6 +123,7 @@ def enter_player_check(player_checks):
 
 
 def enter_tickets(tickets):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Logging tickets ...")
@@ -150,6 +156,7 @@ def enter_tickets(tickets):
 
 
 def enter_raid_score_log(raid_score_logs):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Logging raid score...")
@@ -182,6 +189,7 @@ def enter_raid_score_log(raid_score_logs):
 
 
 def enter_player_archive(players_to_insert):
+    pg_connection_dict = setup_connection()
     if not players_to_insert:
         logger.info("No players to insert.")
         return
@@ -219,6 +227,7 @@ def enter_player_archive(players_to_insert):
 
 
 def enter_tb_data(tb_data):
+    pg_connection_dict = setup_connection()
     if not tb_data:
         logger.warning("No TB data to insert")
         return

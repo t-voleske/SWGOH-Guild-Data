@@ -7,22 +7,25 @@ logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 
-password: str = get_env("PASS")
-host: str = get_env("HOST")
-user: str = get_env("USER")
-db_name: str = get_env("DBNAME")
-port: int = int(get_env("PORT"))
+def setup_connection():
+    password: str = get_env("PASS")
+    host: str = get_env("HOST")
+    user: str = get_env("USER")
+    db_name: str = get_env("DBNAME")
+    port: int = int(get_env("PORT"))
 
-pg_connection_dict = {
-    "dbname": db_name,
-    "user": user,
-    "password": password,
-    "port": port,
-    "host": host,
-}
+    connection_dict = {
+        "dbname": db_name,
+        "user": user,
+        "password": password,
+        "port": port,
+        "host": host,
+    }
+    return connection_dict
 
 
 def read_guild():
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from guild table...")
@@ -46,6 +49,7 @@ def read_guild():
 
 
 def read_players_raw():
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading all entries of players table")
@@ -64,6 +68,7 @@ def read_players_raw():
 
 
 def read_players(guild_id):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from players table WHERE player part of guild")
@@ -88,6 +93,7 @@ def read_players(guild_id):
 
 
 def read_roster_check():
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from players_roster_checks...")
@@ -106,6 +112,7 @@ def read_roster_check():
 
 
 def read_tickets_weekly(guild_id: str, order_str: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from tickets_aggregated_weekly view...")
@@ -134,6 +141,7 @@ def read_tickets_weekly(guild_id: str, order_str: str):
 
 
 def read_tickets_monthly(guild_id: str, order_str: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from tickets_aggregated_monthly view...")
@@ -163,6 +171,7 @@ def read_tickets_monthly(guild_id: str, order_str: str):
 
 # Player level function. No multiple guild support needed
 def read_zeffo_readiness():
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from zeffo_readiness view...")
@@ -181,6 +190,7 @@ def read_zeffo_readiness():
 
 
 def read_guild_members(guild_id):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from guild_members view...")
@@ -205,6 +215,7 @@ def read_guild_members(guild_id):
 
 
 def read_last_login():
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from last_login table...")
@@ -223,6 +234,7 @@ def read_last_login():
 
 
 def read_players_data(guild_id: str, order_str: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading from players_data table ...")
@@ -248,6 +260,7 @@ def read_players_data(guild_id: str, order_str: str):
 
 
 def read_raid_performance_by_guild(guild_id):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading raid_performance view...")
@@ -274,6 +287,7 @@ def read_raid_performance_by_guild(guild_id):
 
 
 def read_member_points(guild_id: str, order_str: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Reading member_points view...")
@@ -299,6 +313,7 @@ def read_member_points(guild_id: str, order_str: str):
 
 
 def get_guild_from_nickname(nickname: str):
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Getting guild from nickname...")
@@ -326,6 +341,7 @@ def get_guild_from_nickname(nickname: str):
 
 
 def get_last_tb_data(guild_id: str) -> list | None:
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Getting data of latest TB for guild %s...", guild_id)
@@ -367,6 +383,7 @@ def get_last_tb_data(guild_id: str) -> list | None:
 
 
 def get_last_tb_data_ordered(guild_id: str, order_str: str) -> list | None:
+    pg_connection_dict = setup_connection()
     conn = None
     try:
         logger.info("Getting data of latest TB for guild %s...", guild_id)
