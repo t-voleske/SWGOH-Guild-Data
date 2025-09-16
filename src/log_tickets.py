@@ -1,11 +1,11 @@
 import os
 import json
-from dotenv import load_dotenv
-from read_data import read_guild
-from api_request import post_request
-from enter_data import enter_tickets
 from datetime import datetime, timedelta
-from helper_functions import check_none_list, check_none_str, setup_logging
+from dotenv import load_dotenv
+from src.read_data import read_guild
+from src.api_request import post_request
+from src.enter_data import enter_tickets
+from src.helper_functions import check_none_list, check_none_str, setup_logging
 import logging
 
 logger = logging.getLogger("guild_data_app")
