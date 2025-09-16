@@ -20,7 +20,7 @@ def setup_logging():
     except FileNotFoundError:
         # Fallback to basic logging if config file doesn't exist
         logging.basicConfig(level=logging.INFO)
-        logging.warning(
+        logging.error(
             "Logging config file %s not found, using basic config", config_file
         )
     except (json.JSONDecodeError, KeyError) as e:
@@ -43,12 +43,14 @@ def check_none_str(possible_none_value, error_str: str) -> str:
     if possible_none_value is None:
         logger.exception(error_str)
         raise ValueError(error_str)
-    if type(possible_none_value) is not str:
+    if not isinstance(possible_none_value, str):
         logger.exception(
-            "possible_none_value should be type str. Use the check_none function of the right type instead!"
+            "possible_none_value should be type str. "
+            "Use the check_none function of the right type instead!"
         )
         raise TypeError(
-            "possible_none_value should be type str. Use the check_none function of the right type instead!"
+            "possible_none_value should be type str. "
+            "Use the check_none function of the right type instead!"
         )
     return possible_none_value
 
@@ -57,12 +59,14 @@ def check_none_list(possible_none_value, error_str: str) -> list:
     if possible_none_value is None:
         logger.exception(error_str)
         raise ValueError(error_str)
-    if type(possible_none_value) is not list:
+    if not isinstance(possible_none_value, list):
         logger.exception(
-            "possible_none_value should be type list. Use the check_none function of the right type instead!"
+            "possible_none_value should be type list. "
+            "Use the check_none function of the right type instead!"
         )
         raise TypeError(
-            "possible_none_value should be type list. Use the check_none function of the right type instead!"
+            "possible_none_value should be type list. "
+            "Use the check_none function of the right type instead!"
         )
     return possible_none_value
 
@@ -71,11 +75,18 @@ def is_list_or_tuple_instance(input_value):
     if isinstance(input_value, (list, tuple)):
         return input_value
     else:
-        logger.exception("Input is not a list or tuple. Check input function!")
-        raise TypeError("Input is not a list or tuple. Check input function!")
+        logger.exception("Input_value is not a list or tuple. Check input_value")
+        raise TypeError("Input_value is not a list or tuple. Check input_value")
 
 
-def floatify(x: int) -> float | str:
+def floatify(x: int | str | float) -> float | str:
     if x == "":
         return "-"
-    return float(x)
+    if isinstance(x, float):
+        logger.warning("Value is already a float. No conersion needed.")
+        return x
+    try:
+        return float(x)
+    except (ValueError, TypeError) as e:
+        logger.exception("Cannot convert %s to float: %s", x, e)
+        return "-"

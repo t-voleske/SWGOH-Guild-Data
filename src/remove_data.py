@@ -21,30 +21,24 @@ pg_connection_dict = {
 }
 
 
-def remove_from_players(player_to_remove):
-    if not player_to_remove:
+def remove_from_players(players_to_remove):
+    if not players_to_remove:
         logger.info("No players to remove.")
         return
 
     conn = None
     try:
-        logger.info("Removing %s old guild members...", len(player_to_remove))
+        logger.info("Removing %s old guild members...", len(players_to_remove))
         conn = psycopg2.connect(**pg_connection_dict)
         with conn.cursor() as cur:
             cur.executemany(
                 "DELETE FROM players WHERE player_id = %s;",
-                player_to_remove,
+                players_to_remove,
             )
             deleted_count = cur.rowcount
             logger.info("Removed %s old guild members", deleted_count)
             conn.commit()
             logger.info("Done")
-    except psycopg2.IntegrityError as ie:
-        logger.error(
-            "Data integrity error (duplicate keys, constraint violations): %s", ie
-        )
-        if conn:
-            conn.rollback()
     except psycopg2.Error as db_error:
         logger.error("Database error: %s", db_error)
         if conn:

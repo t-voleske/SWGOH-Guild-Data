@@ -6,7 +6,12 @@ from read_data import read_players, read_roster_check, read_guild
 from update_data import updateRosterChecks
 from api_request import post_request
 from enter_data import enter_player_check
-from helper_functions import check_none_str, check_none_list, is_list_or_tuple_instance, setup_logging
+from helper_functions import (
+    check_none_str,
+    check_none_list,
+    is_list_or_tuple_instance,
+    setup_logging,
+)
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()

@@ -1,16 +1,15 @@
-from helper_functions import (
+from src.helper_functions import (
     get_env,
     check_none_list,
     check_none_str,
     is_list_or_tuple_instance,
+    floatify,
 )
 import pytest
 
 
 def test_get_env():
-    with pytest.raises(
-        ValueError, match="Error: Check .env file. %s should not be None"
-    ):
+    with pytest.raises(ValueError, match="Error: Check .env file.  should not be None"):
         get_env("")
 
     assert get_env("DBNAME") == "guild_data"
@@ -67,18 +66,28 @@ def test_check_none_str():
         check_none_str([], "Error String")
 
 
-def test_is_ist_or_tuple_instance():
+def test_is_list_or_tuple_instance():
     with pytest.raises(
-        TypeError, match="Input is not a list or tuple. Check input function!"
+        TypeError, match="Input_value is not a list or tuple. Check input_value"
     ):
         is_list_or_tuple_instance("This is not a list or tuple")
 
     with pytest.raises(
         TypeError,
-        match=r"is_list_or_tuple_instance\(\) missing 1 required positional argument: 'input'",
+        match=r"is_list_or_tuple_instance\(\) missing 1 required positional argument: 'input_value'",
     ):
         is_list_or_tuple_instance()
 
     assert is_list_or_tuple_instance([]) == []
     assert is_list_or_tuple_instance((1,)) == (1,)
     assert is_list_or_tuple_instance([(1,)]) == [(1,)]
+
+
+def test_floatify():
+    assert type(floatify(1)) is float
+    assert type(floatify(999999)) is float
+    assert type(floatify("")) is str
+    assert floatify(2.3) == 2.3
+    assert floatify("string") == "-"
+    assert floatify("5.5") == 5.5
+    assert type(floatify("55")) is float

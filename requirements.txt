@@ -1,0 +1,7 @@
+pytest
+flake8
+black
+mypy
+pytest-cov
+psycopg2
+requests
