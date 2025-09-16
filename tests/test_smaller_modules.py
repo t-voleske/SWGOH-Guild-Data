@@ -5,7 +5,8 @@ remove_data.py
 log_tickets.py
 
 """
-
+import os
+from dotenv import load_dotenv
 import pytest
 import psycopg2
 from unittest.mock import Mock, patch, ANY
@@ -63,6 +64,21 @@ class TestRemoveData:
 
     @staticmethod
     @pytest.fixture
+    def mock_env_vars():
+        env_vars = {
+            'PASS': 'password',
+            'HOST': 'test_host',
+            'USER': 'test_user',
+            'DBNAME': 'test_db',
+            'PORT': '1235'
+
+        }
+        with patch.dict(os.environ, env_vars):
+            yield env_vars
+
+
+    @staticmethod
+    @pytest.fixture
     def mock_db():
         mock_conn: Mock = Mock()
         mock_cursor: Mock = Mock()
@@ -77,7 +93,8 @@ class TestRemoveData:
         return mock_conn, mock_cursor
     
 
-    def test_remove_from_players_successful_one(self, mock_db):
+    def test_remove_from_players_successful_one(self, mock_db, mock_env_vars):
+        load_dotenv()
         mock_conn, mock_cursor = mock_db
 
         with (
@@ -97,7 +114,8 @@ class TestRemoveData:
             mock_logger.info.assert_any_call("Removed %s old guild members", 1)
 
 
-    def test_remove_from_players_successful_multiple(self, mock_db):
+    def test_remove_from_players_successful_multiple(self, mock_db, mock_env_vars):
+        load_dotenv()
         mock_conn, mock_cursor = mock_db
 
         with (
@@ -117,7 +135,8 @@ class TestRemoveData:
             mock_logger.info.assert_any_call("Removed %s old guild members", 3)
 
 
-    def test_remove_from_players_no_edits(self, mock_db):
+    def test_remove_from_players_no_edits(self, mock_db, mock_env_vars):
+        load_dotenv()
         mock_conn, mock_cursor = mock_db
 
         with (
@@ -133,7 +152,8 @@ class TestRemoveData:
             mock_conn.commit.assert_not_called()
             mock_logger.info.assert_any_call("No players to remove.")
 
-    def test_remove_from_players_db_error(self, mock_db):
+    def test_remove_from_players_db_error(self, mock_db, mock_env_vars):
+        load_dotenv()
         mock_conn, mock_cursor = mock_db
 
         with (
