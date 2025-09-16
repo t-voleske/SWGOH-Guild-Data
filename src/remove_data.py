@@ -6,21 +6,25 @@ logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 
-
-def remove_from_players(players_to_remove):
+def setup_connection():
     password: str = get_env("PASS")
     host: str = get_env("HOST")
     user: str = get_env("USER")
     db_name: str = get_env("DBNAME")
     port: int = int(get_env("PORT"))
 
-    pg_connection_dict = {
+    connection_dict = {
         "dbname": db_name,
         "user": user,
         "password": password,
         "port": port,
         "host": host,
     }
+    return connection_dict
+
+
+def remove_from_players(players_to_remove):
+    pg_connection_dict = setup_connection()
     if not players_to_remove:
         logger.info("No players to remove.")
         return
