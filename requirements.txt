@@ -3,6 +3,7 @@ flake8
 black
 mypy
 pytest-cov
+pytest-mock
 psycopg2
 requests
 python-dotenv
