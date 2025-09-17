@@ -7,15 +7,14 @@ from src.helper_functions import (
 )
 import os
 from dotenv import load_dotenv
-from unittest.mock import Mock, patch, ANY
+from unittest.mock import patch
 import pytest
 
 class TestHelperFunctions():
 
 
-    @staticmethod
     @pytest.fixture
-    def mock_env_vars():
+    def mock_env_vars(self):
         env_vars = {
             'PASS': 'password',
             'HOST': 'test_host',
@@ -27,7 +26,7 @@ class TestHelperFunctions():
         with patch.dict(os.environ, env_vars):
             yield env_vars
 
-    def test_get_env(mock_env_vars):
+    def test_get_env(self, mock_env_vars):
         load_dotenv()
         with pytest.raises(ValueError, match="Error: Check .env file.  should not be None"):
             get_env("")
@@ -35,7 +34,7 @@ class TestHelperFunctions():
         assert get_env("DBNAME") == "guild_data"
 
 
-    def test_check_none_list():
+    def test_check_none_list(self):
         with pytest.raises(
             TypeError,
             match=r"check_none_list\(\) missing 2 required positional arguments: 'possible_none_value' and 'error_str'",
@@ -64,7 +63,7 @@ class TestHelperFunctions():
             check_none_list((None), "This should also raise a ValueError")
 
 
-    def test_check_none_str():
+    def test_check_none_str(self):
         with pytest.raises(
             TypeError,
             match=r"check_none_str\(\) missing 2 required positional arguments: 'possible_none_value' and 'error_str'",
@@ -86,7 +85,7 @@ class TestHelperFunctions():
             check_none_str([], "Error String")
 
 
-    def test_is_list_or_tuple_instance():
+    def test_is_list_or_tuple_instance(self):
         with pytest.raises(
             TypeError, match="Input_value is not a list or tuple. Check input_value"
         ):
@@ -103,7 +102,7 @@ class TestHelperFunctions():
         assert is_list_or_tuple_instance([(1,)]) == [(1,)]
 
 
-    def test_floatify():
+    def test_floatify(self):
         assert type(floatify(1)) is float
         assert type(floatify(999999)) is float
         assert type(floatify("")) is str
