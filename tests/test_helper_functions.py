@@ -5,10 +5,27 @@ from src.helper_functions import (
     is_list_or_tuple_instance,
     floatify,
 )
+import os
+from dotenv import load_dotenv
+from unittest.mock import Mock, patch, ANY
 import pytest
 
+@staticmethod
+@pytest.fixture
+def mock_env_vars():
+    env_vars = {
+        'PASS': 'password',
+        'HOST': 'test_host',
+        'USER': 'test_user',
+        'DBNAME': 'test_db',
+        'PORT': '1235'
 
-def test_get_env():
+    }
+    with patch.dict(os.environ, env_vars):
+        yield env_vars
+
+def test_get_env(mock_env_vars):
+    load_dotenv()
     with pytest.raises(ValueError, match="Error: Check .env file.  should not be None"):
         get_env("")
 
