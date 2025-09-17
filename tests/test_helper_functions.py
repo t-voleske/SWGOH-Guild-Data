@@ -20,7 +20,7 @@ class TestHelperFunctions():
             'PASS': 'password',
             'HOST': 'test_host',
             'USER': 'test_user',
-            'DBNAME': 'test_db',
+            'DBNAME': 'guild_data',
             'PORT': '1235'
 
         }
