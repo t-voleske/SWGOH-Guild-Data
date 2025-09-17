@@ -6,9 +6,9 @@ from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
 import numpy as np
-from src.helper_functions import setup_logging
-from src.enter_data import enter_tb_data
-from src.read_data import get_guild_from_nickname
+from helper_functions import setup_logging
+from enter_data import enter_tb_data
+from read_data import get_guild_from_nickname
 
 
 load_dotenv()

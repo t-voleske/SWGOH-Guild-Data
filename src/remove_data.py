@@ -1,6 +1,6 @@
 import logging
 import psycopg2
-from src.helper_functions import setup_logging, get_env
+from helper_functions import setup_logging, get_env
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()

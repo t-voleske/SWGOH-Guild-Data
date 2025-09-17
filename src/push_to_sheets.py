@@ -5,7 +5,7 @@ import gspread
 import pandas as pd
 import psycopg2
 from dotenv import load_dotenv
-from src.read_data import (
+from read_data import (
     read_players_data,
     read_tickets_weekly,
     read_tickets_monthly,
@@ -13,8 +13,8 @@ from src.read_data import (
     read_guild,
     get_last_tb_data_ordered,
 )
-from src.spreadsheet_operations import write_to_sheet, check_order
-from src.helper_functions import check_none_str, check_none_list, setup_logging, floatify
+from spreadsheet_operations import write_to_sheet, check_order
+from helper_functions import check_none_str, check_none_list, setup_logging, floatify
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()

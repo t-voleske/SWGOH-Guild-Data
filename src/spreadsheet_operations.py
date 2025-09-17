@@ -7,7 +7,7 @@ from gspread.utils import ValueRenderOption
 import pandas as pd
 import numpy as np
 from dotenv import load_dotenv
-from src.helper_functions import check_none_str, setup_logging
+from helper_functions import check_none_str, setup_logging
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()
