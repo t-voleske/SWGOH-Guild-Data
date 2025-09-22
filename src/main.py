@@ -123,5 +123,4 @@ if __name__ == "__main__":
             remove_from_guild(i)
 
     # archive players after their guild affiliation was removed
-    logger.info(playerArr[0])
     archive_process()

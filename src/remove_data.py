@@ -24,6 +24,9 @@ def setup_connection():
 
 
 def remove_from_players(players_to_remove):
+    """
+    Remove a player from the players table
+    """
     pg_connection_dict = setup_connection()
     if not players_to_remove:
         logger.info("No players to remove.")

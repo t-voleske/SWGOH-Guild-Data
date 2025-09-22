@@ -13,22 +13,27 @@ from helper_functions import (
     setup_logging,
 )
 
+
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
+def env_loading() -> tuple[str, str]:
+    """
+    Load the needed params from .env file
+    """
+    load_dotenv()
+    # get guild and player interfaces for comlink
+    guild_url_var: str = check_none_str(
+        os.getenv("PASS"), "Error: Check .env file. PASS should not be None"
+    )
+    player_url_var: str = check_none_str(
+        os.getenv("PLAYER_URL"), "Error: Check .env file. PLAYER_URL should not be None"
+    )
+    return (guild_url_var, player_url_var)
 
-load_dotenv()
-# get guild and player interfaces for comlink
-guild_url: str = check_none_str(
-    os.getenv("PASS"), "Error: Check .env file. GUILD_URL should not be None"
-)
-player_url: str = check_none_str(
-    os.getenv("PLAYER_URL"), "Error: Check .env file. GUILD_URL should not be None"
-)
 
-
-def check_roster(p):
-    player = json.dumps(post_request(player_url, {"payload": {"playerId": p}}))
+def check_roster(player_id: str, player_url: str) -> tuple:
+    player = json.dumps(post_request(player_url, {"payload": {"playerId": player_id}}))
     player_data = json.loads(player)["rosterUnit"]
 
     # 7 star checks
@@ -51,7 +56,7 @@ def check_roster(p):
         for t in player_data
     )
     if not jedi_cal_leveled:
-        check = all_7_star, jedi_cal_unlocked, False, False, False, p
+        check = all_7_star, jedi_cal_unlocked, False, False, False, player_id
         logging.info("Jedi Cal not lvl 85 yet")
         return check
 
@@ -104,68 +109,70 @@ def check_roster(p):
             jedi_cal_r7,
             cere_r7,
             jedi_cal_skills_done,
-            p,
+            player_id,
         )
         logging.info("Else reached")
         logging.info(check)
         return check
 
-
-roster_check_data = check_none_list(
-    read_roster_check(),
-    "roster_check_data should not be None. Check read_roster_check function",
-)
-
-
-guilds_config = check_none_list(
-    read_guild(), "read_guild should not be None! Check read_guild function"
-)
-logger.debug("Guilds config: %s", guilds_config)
-
-for g in guilds_config:
-    read_players_data = check_none_list(
-        read_players(g[0]),
-        "read_players data should not be None. Check read_players function",
+if __name__ == "__main__":
+    env_vars = env_loading()
+    guild_url_env = env_vars[0]
+    player_url_env = env_vars[1]
+    roster_check_data = check_none_list(
+        read_roster_check(),
+        "roster_check_data should not be None. Check read_roster_check function",
     )
 
-    players = [
-        check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[0]
-        if check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[5] == g[0]
-        else None
-        for x in read_players_data
-    ]
-    logger.debug("players:")
-    logger.debug(players)
-    players = [x for x in players if x is not None]
 
-    # No update needed for players already zeffo_ready == True
-    already_zeffo_ready = [
-        y[0]
-        for y in roster_check_data
-        if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6]
-    ]
-    # filter for players that are zeffo_ready == False, then map entry to their player_id
-    players_to_update = [
-        y[0]
-        for y in roster_check_data
-        if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6] is False
-    ]
-    logger.info("players_to_update: %s", players_to_update)
+    guilds_config = check_none_list(
+        read_guild(), "read_guild should not be None! Check read_guild function"
+    )
+    logger.debug("Guilds config: %s", guilds_config)
 
-    # Remove zeffo ready and players to update from players list
-    players = [
-        x
-        for x in players
-        if x not in already_zeffo_ready and x not in players_to_update
-    ]
+    for g in guilds_config:
+        read_players_data = check_none_list(
+            read_players(g[0]),
+            "read_players data should not be None. Check read_players function",
+        )
+        players = [
+            check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[0]
+            if check_none_list(is_list_or_tuple_instance(x), "Cannot be None")[5] == g[0]
+            else None
+            for x in read_players_data
+        ]
+        logger.debug("players:")
+        logger.debug(players)
+        players = [x for x in players if x is not None]
 
-    # Iterate through all players that need an initial entry in the table
-    roster_array = []
-    for e in players:
-        roster_array.append(check_roster(e))
+        # No update needed for players already zeffo_ready == True
+        already_zeffo_ready = [
+            y[0]
+            for y in roster_check_data
+            if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6]
+        ]
+        # filter for players that are zeffo_ready == False, then map entry to their player_id
+        players_to_update = [
+            y[0]
+            for y in roster_check_data
+            if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6] is False
+        ]
+        logger.info("players_to_update: %s", players_to_update)
 
-    enter_player_check(roster_array)
+        # Remove zeffo ready and players to update from players list
+        players = [
+            x
+            for x in players
+            if x not in already_zeffo_ready and x not in players_to_update
+        ]
 
-    # Iterate through all players that need an update in the table
-    for d in players_to_update:
-        updateRosterChecks(check_roster(d))
+        # Iterate through all players that need an initial entry in the table
+        roster_array = []
+        for e in players:
+            roster_array.append(check_roster(e, player_url_env))
+
+        enter_player_check(roster_array)
+
+        # Iterate through all players that need an update in the table
+        for d in players_to_update:
+            updateRosterChecks(check_roster(d, player_url_env))

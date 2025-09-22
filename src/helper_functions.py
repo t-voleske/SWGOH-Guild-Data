@@ -55,17 +55,17 @@ def check_none_str(possible_none_value, error_str: str) -> str:
     return possible_none_value
 
 
-def check_none_list(possible_none_value, error_str: str) -> list:
+def check_none_list(possible_none_value, error_str: str) -> list | tuple:
     if possible_none_value is None:
         logger.exception(error_str)
         raise ValueError(error_str)
-    if not isinstance(possible_none_value, list):
+    if not isinstance(possible_none_value, (list, tuple)):
         logger.exception(
-            "possible_none_value should be type list. "
+            "possible_none_value should be type list or tuple. "
             "Use the check_none function of the right type instead!"
         )
         raise TypeError(
-            "possible_none_value should be type list. "
+            "possible_none_value should be type list or tuple. "
             "Use the check_none function of the right type instead!"
         )
     return possible_none_value
@@ -74,16 +74,16 @@ def check_none_list(possible_none_value, error_str: str) -> list:
 def is_list_or_tuple_instance(input_value):
     if isinstance(input_value, (list, tuple)):
         return input_value
-    else:
-        logger.exception("Input_value is not a list or tuple. Check input_value")
-        raise TypeError("Input_value is not a list or tuple. Check input_value")
+    
+    logger.exception("Input_value is not a list or tuple. Check input_value")
+    raise TypeError("Input_value is not a list or tuple. Check input_value")
 
 
 def floatify(x: int | str | float) -> float | str:
     if x == "":
         return "-"
     if isinstance(x, float):
-        logger.warning("Value is already a float. No conersion needed.")
+        logger.debug("Value is already a float. No conersion needed.")
         return x
     try:
         return float(x)

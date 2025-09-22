@@ -23,6 +23,9 @@ def setup_connection():
 
 
 def remove_from_guild(player_id: str):
+    """
+    Remove guild_id from a player record to update guild affiliation status
+    """
     pg_connection_dict = setup_connection()
     conn = None
     try:
@@ -59,6 +62,9 @@ def remove_from_guild(player_id: str):
 
 
 def update_activity(activity_time, player_id: str):
+    """
+    Update the last activity time for a player
+    """
     pg_connection_dict = setup_connection()
     conn = None
     try:
@@ -95,6 +101,9 @@ def update_activity(activity_time, player_id: str):
 
 
 def updateGP(gp, player_id: str):
+    """
+    Update the current total GP for a player
+    """
     pg_connection_dict = setup_connection()
     conn = None
     try:
@@ -131,6 +140,9 @@ def updateGP(gp, player_id: str):
 
 
 def updateLastRaidResult(last_raid_result, player_id: str):
+    """
+    Update the last raid result for a player
+    """
     pg_connection_dict = setup_connection()
     conn = None
     try:
@@ -167,6 +179,9 @@ def updateLastRaidResult(last_raid_result, player_id: str):
 
 
 def updateRosterChecks(player_checks):
+    """
+    Update the roster check entry for a player
+    """
     pg_connection_dict = setup_connection()
     conn = None
     try:

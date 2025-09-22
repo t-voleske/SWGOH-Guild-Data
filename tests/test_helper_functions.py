@@ -50,12 +50,6 @@ class TestHelperFunctions():
         assert check_none_list([1, 2, 3], "Error string") == [1, 2, 3]
         assert check_none_list([None], "Error string") == [None]
 
-        with pytest.raises(
-            TypeError,
-            match="possible_none_value should be type list. Use the check_none function of the right type instead!",
-        ):
-            check_none_list((None,), "Error string")
-
         with pytest.raises(ValueError, match="This should raise a ValueError"):
             check_none_list(None, "This should raise a ValueError")
 

@@ -6,22 +6,22 @@ import logging
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
-
-gp_logs = []
-guilds_config = check_none_list(
-    read_guild(), "Guild should not be None. Check read_guild function"
-)
-logger.debug("After Import: %s", guilds_config)
-
-for g in guilds_config:
-    logger.debug("g: %s", g)
-
-    db_players = check_none_list(
-        read_players(g[0]), "Players should not be None. Check read_players function"
+if __name__ == "__main__":
+    gp_logs = []
+    guilds_config = check_none_list(
+        read_guild(), "Guild should not be None. Check read_guild function"
     )
+    logger.debug("After Import: %s", guilds_config)
 
-    for e in db_players:
-        gp_logs.append((e[0], e[2]))
-    logger.info("Logging GP for: %s", g[1])
+    for g in guilds_config:
+        logger.debug("g: %s", g)
 
-enter_gp_logs(gp_logs)
+        db_players = check_none_list(
+            read_players(g[0]), "Players should not be None. Check read_players function"
+        )
+
+        for e in db_players:
+            gp_logs.append((e[0], e[2]))
+        logger.info("Logging GP for: %s", g[1])
+
+    enter_gp_logs(gp_logs)
