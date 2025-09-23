@@ -1,5 +1,5 @@
 """
-Testing file for files:
+Testing file for:
 api_request.py
 remove_data.py
 log_tickets.py
@@ -11,8 +11,8 @@ import pytest
 import psycopg2
 from unittest.mock import Mock, patch, ANY
 
-from api_request import post_request
-from remove_data import remove_from_players
+from src.api_request import post_request
+from src.remove_data import remove_from_players
 #from log_tickets import is_around_reset_time
 # from src.csv_import import get_guild_random
 
@@ -21,8 +21,8 @@ class TestApiRequest:
 
 
     def test_successful_post_guild(self, mocker):
-        mock_setup_logging: Mock = mocker.patch("api_request.setup_logging")
-        mock_post: Mock = mocker.patch("api_request.requests.post")
+        mock_setup_logging: Mock = mocker.patch("src.api_request.setup_logging")
+        mock_post: Mock = mocker.patch("src.api_request.requests.post")
 
         url = "https://test.api/endpoint"
         data = {"payload": {"guildId": "Guild_Id"}}
@@ -41,8 +41,8 @@ class TestApiRequest:
 
 
     def test_failed_post(self, mocker):
-        mock_setup_logging: Mock = mocker.patch("api_request.setup_logging")
-        mock_post: Mock = mocker.patch("api_request.requests.post")
+        mock_setup_logging: Mock = mocker.patch("src.api_request.setup_logging")
+        mock_post: Mock = mocker.patch("src.api_request.requests.post")
 
         url = "https://test.api/endpoint"
         data = {"payload": {}}
@@ -98,14 +98,15 @@ class TestRemoveData:
         mock_conn, mock_cursor = mock_db
 
         with (
-            patch("remove_data.psycopg2.connect") as mock_connect, 
-            patch("remove_data.logger") as mock_logger
+            patch("src.remove_data.psycopg2.connect") as mock_connect, 
+            patch("src.remove_data.logger") as mock_logger
         ):
             mock_connect .return_value = mock_conn
             mock_cursor.rowcount = 1
 
             remove_from_players(("player_1",))
 
+            # Test mock
             mock_cursor.executemany.assert_called_once_with(
                 "DELETE FROM players WHERE player_id = %s;",
                 ("player_1",)
@@ -119,8 +120,8 @@ class TestRemoveData:
         mock_conn, mock_cursor = mock_db
 
         with (
-            patch("remove_data.psycopg2.connect") as mock_connect, 
-            patch("remove_data.logger") as mock_logger
+            patch("src.remove_data.psycopg2.connect") as mock_connect, 
+            patch("src.remove_data.logger") as mock_logger
         ):
             mock_connect .return_value = mock_conn
             mock_cursor.rowcount = 3
@@ -140,8 +141,8 @@ class TestRemoveData:
         mock_conn, mock_cursor = mock_db
 
         with (
-            patch("remove_data.psycopg2.connect") as mock_connect, 
-            patch("remove_data.logger") as mock_logger
+            patch("src.remove_data.psycopg2.connect") as mock_connect, 
+            patch("src.remove_data.logger") as mock_logger
         ):
             mock_connect .return_value = mock_conn
             mock_cursor.rowcount = 0
@@ -157,8 +158,8 @@ class TestRemoveData:
         mock_conn, mock_cursor = mock_db
 
         with (
-            patch("remove_data.psycopg2.connect") as mock_connect,
-            patch("remove_data.logger") as mock_logger
+            patch("src.remove_data.psycopg2.connect") as mock_connect,
+            patch("src.remove_data.logger") as mock_logger
         ):
             mock_connect.return_value = mock_conn
             
