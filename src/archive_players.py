@@ -1,8 +1,9 @@
-from read_data import read_players_raw, read_guild
-from enter_data import enter_player_archive
-from remove_data import remove_from_players
-from helper_functions import check_none_list, setup_logging
 import logging
+from .read_data import read_players_raw, read_guild
+from .enter_data import enter_player_archive
+from .remove_data import remove_from_players
+from .helper_functions import check_none_list, setup_logging
+
 
 logger = logging.getLogger("guild_data_app")
 

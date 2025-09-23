@@ -4,12 +4,12 @@ from datetime import datetime as dt
 import logging
 from dotenv import load_dotenv
 
-from api_request import post_request
-from archive_players import archive_process
-from enter_data import enter_players
-from read_data import read_guild, read_players
-from update_data import remove_from_guild, update_activity, updateGP
-from helper_functions import check_none_str, check_none_list, setup_logging
+from .api_request import post_request
+from .archive_players import archive_process
+from .enter_data import enter_players
+from .read_data import read_guild, read_players
+from .update_data import remove_from_guild, update_activity, updateGP
+from .helper_functions import check_none_str, check_none_list, setup_logging
 
 
 logger = logging.getLogger("guild_data_app")

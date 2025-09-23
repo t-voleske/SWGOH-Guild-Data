@@ -1,7 +1,7 @@
-from read_data import read_players, read_guild
-from enter_data import enter_gp_logs
-from helper_functions import check_none_list, setup_logging
 import logging
+from .helper_functions import check_none_list, setup_logging
+from .read_data import read_players, read_guild
+from .enter_data import enter_gp_logs
 
 logger = logging.getLogger("guild_data_app")
 setup_logging()

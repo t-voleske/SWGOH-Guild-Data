@@ -2,10 +2,10 @@ import json
 import os
 import logging
 from dotenv import load_dotenv
-from read_data import read_guild, read_players
-from update_data import updateLastRaidResult
-from api_request import post_request
-from helper_functions import check_none_str, check_none_list, setup_logging
+from .read_data import read_guild, read_players
+from .update_data import updateLastRaidResult
+from .api_request import post_request
+from .helper_functions import check_none_str, check_none_list, setup_logging
 
 
 logger = logging.getLogger("guild_data_app")

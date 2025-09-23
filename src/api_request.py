@@ -1,7 +1,7 @@
 import logging
 from typing import Dict, Any
 import requests
-from helper_functions import setup_logging
+from .helper_functions import setup_logging
 
 logger = logging.getLogger("guild_data_app")
 
