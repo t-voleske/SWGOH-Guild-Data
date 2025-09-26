@@ -44,7 +44,7 @@ The database, API and scheduled python programs are hosted on local hardware.
 
 ## Spreadsheet View Example
 
-<img src="assets/spreadsheet_example.png" alt="An example of the main spreadsheet view" width="40%">
+<img src="assets/spreadsheet_example.png" alt="An example of the main spreadsheet view" width="80%">
 
 The main view combines the most important metrics, so they are visible at a glance. For a deeper dive into the different topics, there are more detailed views available. <br>
 (Information that could potentially identify an individual has been anonymized for this example.)
