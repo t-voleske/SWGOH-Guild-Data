@@ -51,7 +51,7 @@ The main view combines the most important metrics, so they are visible at a glan
 
 ## Reproducing the project
 
-This is meant solely as a personal project at this point. Pull requests are welcome, but i will not support replication efforts.
+This is meant solely as a personal project at this point. I will not actively support replication efforts, but you are welcome to ask questions.
 Please open an issue, if you have any inquiries. 
 
 
