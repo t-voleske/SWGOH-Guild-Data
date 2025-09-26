@@ -8,12 +8,14 @@ import src.read_data as read_data
 
 class TestReadData(unittest.TestCase):
     """
-    Tests for database reading functions in read_data.py.
+    Tests for database reading functions in read_data.py
     """
 
     @patch('src.read_data.get_env')
     def test_setup_connection(self, mock_get_env):
-        """Tests that setup_connection correctly builds the connection dictionary."""
+        """
+        Tests that setup_connection correctly builds the connection dictionary
+        """
 
         env_vars = {
             "PASS": "test_password",
@@ -39,7 +41,7 @@ class TestReadData(unittest.TestCase):
 
     def test_get_valid_order_parameter(self):
         """
-        Tests the SQL injection prevention for order parameters.
+        Tests the SQL injection prevention for order parameters
         """
         # Valid parameter
         self.assertEqual(read_data.get_valid_order_parameter('nickname ASC'), 'nickname ASC')
@@ -52,7 +54,7 @@ class TestReadData(unittest.TestCase):
         
     def test_get_valid_timeframe_parameter(self):
         """
-        Tests the SQL injection prevention for timeframe parameters.
+        Tests the SQL injection prevention for timeframe parameters
         """
         # Valid parameters
         self.assertEqual(read_data.get_valid_timeframe_parameter('two_weeks'), 'two_weeks')
@@ -65,7 +67,9 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.psycopg2.connect')
     @patch('src.read_data.setup_connection')
     def test_make_sql_query_single_success(self, mock_setup_connection, mock_connect):
-        """Tests a successful database query execution."""
+        """
+        Tests a successful database query execution
+        """
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_connect.return_value = mock_conn
@@ -86,7 +90,9 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.psycopg2.connect')
     @patch('src.read_data.setup_connection')
     def test_make_sql_query_single_no_data(self, mock_setup_connection, mock_connect):
-        """Tests a query that returns no rows."""
+        """
+        Tests a query that returns no rows
+        """
         mock_conn = MagicMock()
         mock_cursor = MagicMock()
         mock_connect.return_value = mock_conn
@@ -105,14 +111,18 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.psycopg2.connect', side_effect=psycopg2.Error("Connection failed"))
     @patch('src.read_data.setup_connection')
     def test_make_sql_query_single_connection_error(self, mock_setup_connection, mock_connect):
-        """Tests error handling for a failed database connection."""
+        """
+        Tests error handling for a failed database connection
+        """
         result = read_data.make_sql_query_single("SELECT * FROM guild;", "guild")
         self.assertEqual(result, [])
         mock_connect.assert_called_once()
 
     @patch('src.read_data.make_sql_query_single')
     def test_read_guild(self, mock_make_sql_query_single):
-        """Tests the read_guild function calls the underlying function correctly."""
+        """
+        Tests the read_guild function calls the underlying function correctly
+        """
         expected_data = [("G1", "Guild Alpha", "18:00:00")]
         mock_make_sql_query_single.return_value = expected_data
         
@@ -123,7 +133,9 @@ class TestReadData(unittest.TestCase):
 
     @patch('src.read_data.make_sql_query_single')
     def test_read_players(self, mock_make_sql_query_single):
-        """Tests the read_players function with a specific guild ID."""
+        """
+        Tests the read_players function with a specific guild ID
+        """
         guild_id = "123"
         expected_data = [("p1", "Player One"), ("p2", "Player Two")]
         mock_make_sql_query_single.return_value = expected_data
@@ -141,7 +153,9 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.get_valid_order_parameter', return_value='nickname ASC')
     @patch('src.read_data.make_sql_query_single')
     def test_read_players_data_valid_order(self, mock_make_sql, mock_get_valid_order):
-        """Tests read_players_data with a valid order string."""
+        """
+        Tests read_players_data with a valid order string
+        """
         guild_id = 'test_guild'
         order_str = 'nickname ASC'
         mock_make_sql.return_value = [('p1',), ('p2',)]
@@ -159,7 +173,7 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.make_sql_query_single')
     def test_read_tickets_weekly(self, mock_make_sql, mock_get_valid_order):
         """
-        Tests read_tickets_weekly with a valid order string.
+        Tests read_tickets_weekly with a valid order string
         """
         guild_id = 'test_guild'
         order_str = 'tickets_lost_week ASC'
@@ -177,7 +191,7 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.make_sql_query_single')
     def test_get_guild_from_nickname_found(self, mock_make_sql_query_single):
         """
-        Tests getting a guild name from a nickname when the player is found.
+        Tests getting a guild name from a nickname when the player is found
         """
         mock_make_sql_query_single.return_value = [("Test Guild",)]
         
@@ -189,7 +203,9 @@ class TestReadData(unittest.TestCase):
 
     @patch('src.read_data.make_sql_query_single')
     def test_get_guild_from_nickname_not_found(self, mock_make_sql_query_single):
-        """Tests getting a guild name from a nickname when the player is not found."""
+        """
+        Tests getting a guild name from a nickname when the player is not found
+        """
         mock_make_sql_query_single.return_value = []
         
         result = read_data.get_guild_from_nickname("nonexistent_player")
@@ -202,7 +218,7 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.make_sql_query_single')
     def test_get_last_tb_data_ordered(self, mock_make_sql, mock_get_valid_order):
         """
-        Tests get_last_tb_data_ordered with a valid order.
+        Tests get_last_tb_data_ordered with a valid order
         """
         guild_id = 'test_guild'
         order_str = 'total_waves_completed DESC'
@@ -222,7 +238,7 @@ class TestReadData(unittest.TestCase):
     @patch('src.read_data.make_sql_query_single')
     def test_read_raid_progression(self, mock_make_sql, mock_get_valid_timeframe, mock_get_valid_order):
         """
-        Tests read_raid_progression with a valid timeframe and order.
+        Tests read_raid_progression with a valid timeframe and order
         """
         guild_id = 'test_guild'
         timeframe = 'two_weeks'
@@ -239,5 +255,3 @@ class TestReadData(unittest.TestCase):
         self.assertIn("ORDER BY score_difference DESC", query_str)
         self.assertEqual(result, [('p1', 'success', 100), ('p2', 'fail', -50)])
         
-if __name__ == '__main__':
-    unittest.main()

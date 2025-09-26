@@ -1,3 +1,12 @@
-requests
 pytest
+flake8
+black
+mypy
+pytest-cov
+pytest-mock
 psycopg2
+requests
+python-dotenv
+pandas
+numpy
+gspread

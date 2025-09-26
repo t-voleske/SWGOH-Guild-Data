@@ -9,6 +9,9 @@ logger = logging.getLogger("guild_data_app")
 
 
 def archive_process():
+    """
+    Archive players who are no longer in any of the tracked guilds
+    """
     setup_logging()
     guilds_config = check_none_list(
         read_guild(), "Error: read_guild function should not return None"

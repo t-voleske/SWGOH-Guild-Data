@@ -8,6 +8,9 @@ setup_logging()
 
 
 def setup_connection():
+    """
+    Set up psql connection dict with params from .env file
+    """
     password: str = get_env("PASS")
     host: str = get_env("HOST")
     user: str = get_env("USER")
@@ -26,7 +29,7 @@ def setup_connection():
 
 def enter_players(players_to_insert):
     """
-    Enter new player data into the players table.
+    Enter new player data into the players table
     """
     pg_connection_dict = setup_connection()
     conn = None
@@ -62,7 +65,7 @@ def enter_players(players_to_insert):
 
 def enter_gp_logs(gp_logs):
     """
-    Enter player GP logs into the gp_history table.
+    Enter player GP logs into the gp_history table
     """
     pg_connection_dict = setup_connection()
     conn = None
@@ -98,7 +101,7 @@ def enter_gp_logs(gp_logs):
 
 def enter_player_check(player_checks):
     """
-    Enter player checks into the players_roster_checks table.
+    Enter player checks into the players_roster_checks table
     """
     pg_connection_dict = setup_connection()
     conn = None
@@ -134,7 +137,7 @@ def enter_player_check(player_checks):
 
 def enter_tickets(tickets):
     """
-    Enter ticket logs into the ticket_log table.
+    Enter ticket logs into the ticket_log table
     """
     pg_connection_dict = setup_connection()
     conn = None
@@ -170,7 +173,7 @@ def enter_tickets(tickets):
 
 def enter_raid_score_log(raid_score_logs):
     """
-    Enter raid score logs into the raid_score_log table.
+    Enter raid score logs into the raid_score_log table
     """
     pg_connection_dict = setup_connection()
     conn = None
@@ -206,7 +209,7 @@ def enter_raid_score_log(raid_score_logs):
 
 def enter_player_archive(players_to_insert):
     """
-    Enter player data from ex guild members into the players_archive table.
+    Enter player data from ex guild members into the players_archive table
     """
     pg_connection_dict = setup_connection()
     if not players_to_insert:
@@ -247,7 +250,7 @@ def enter_player_archive(players_to_insert):
 
 def enter_tb_data(tb_data):
     """
-    Enter territory battle data into the tb_import table.
+    Enter territory battle data into the tb_import table
     """
     pg_connection_dict = setup_connection()
     if not tb_data:

@@ -7,6 +7,9 @@ logger = logging.getLogger("guild_data_app")
 
 
 def post_request(url: str, data: Dict[str, Any], timeout: int = 30):
+    """
+    Send a POST request to a API endpoint and return the JSON response if successful
+    """
     setup_logging()
     try:
         response = requests.post(url, json=data, timeout=timeout)

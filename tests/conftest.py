@@ -15,7 +15,7 @@ if src_path not in sys.path:
 @pytest.fixture
 def mock_db_connection(monkeypatch):
     """
-    Fixture to mock the psycopg2 connection and cursor.
+    Fixture to mock the psycopg2 connection and cursor
 
     """
     mock_cur = MagicMock()

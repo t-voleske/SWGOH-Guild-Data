@@ -26,7 +26,7 @@ gc = gspread.service_account(filename=Path(filepath))
 
 def rate_limit(calls_per_minute: float):
     """
-    Rate limit function to prevent rate limiting by spreadsheet API
+    Rate limit function to prevent rate limiting by spreadsheet API, that could abort the program
     """
     min_interval = 60.0 / calls_per_minute 
     last_called = [0.0]

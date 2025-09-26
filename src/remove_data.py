@@ -7,6 +7,9 @@ setup_logging()
 
 
 def setup_connection():
+    """
+    Set up psql connection dict with params from .env file
+    """
     password: str = get_env("PASS")
     host: str = get_env("HOST")
     user: str = get_env("USER")

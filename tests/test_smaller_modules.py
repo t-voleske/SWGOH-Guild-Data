@@ -1,9 +1,9 @@
 """
 Testing file for:
-api_request.py
-remove_data.py
-log_tickets.py
-
+    api_request.py
+    remove_data.py
+    log_tickets.py
+    csv_import.py
 """
 from datetime import datetime, time
 import os
@@ -23,9 +23,14 @@ import src.csv_import as csv_import
 
 
 class TestApiRequest:
-
+    """
+    Unit tests for the api_request.py module
+    """
 
     def test_successful_post_guild(self, mocker):
+        """
+        Tests a successful POST request returning guild member data
+        """
         mock_setup_logging: Mock = mocker.patch("src.api_request.setup_logging")
         mock_post: Mock = mocker.patch("src.api_request.requests.post")
 
@@ -46,6 +51,9 @@ class TestApiRequest:
 
 
     def test_failed_post(self, mocker):
+        """
+        Tests handling of a failed POST request (non-200 status code)
+        """
         mock_setup_logging: Mock = mocker.patch("src.api_request.setup_logging")
         mock_post: Mock = mocker.patch("src.api_request.requests.post")
 
@@ -69,6 +77,9 @@ class TestRemoveData:
 
     @pytest.fixture
     def mock_env_vars(self):
+        """
+        Mocks environment variables for database connection
+        """
         env_vars = {
             'PASS': 'password',
             'HOST': 'test_host',
@@ -83,6 +94,9 @@ class TestRemoveData:
 
     @pytest.fixture
     def mock_db(self):
+        """
+        Mocks the database connection and cursor
+        """
         mock_conn: Mock = Mock()
         mock_cursor: Mock = Mock()
 
@@ -96,6 +110,9 @@ class TestRemoveData:
     
 
     def test_remove_from_players_successful_one(self, mock_db, mock_env_vars):
+        """
+        Tests removing a single player successfully
+        """
         load_dotenv()
         mock_conn, mock_cursor = mock_db
 
@@ -117,6 +134,9 @@ class TestRemoveData:
 
 
     def test_remove_from_players_successful_multiple(self, mock_db, mock_env_vars):
+        """
+        Tests removing multiple players successfully
+        """
         load_dotenv()
         mock_conn, mock_cursor = mock_db
 
@@ -138,6 +158,9 @@ class TestRemoveData:
 
 
     def test_remove_from_players_no_edits(self, mock_db, mock_env_vars):
+        """
+        Tests the scenario where no rows are affected (no players removed)
+        """
         load_dotenv()
         mock_conn, mock_cursor = mock_db
 
@@ -155,6 +178,9 @@ class TestRemoveData:
             mock_logger.info.assert_any_call("No players to remove.")
 
     def test_remove_from_players_db_error(self, mock_db, mock_env_vars):
+        """
+        Tests handling of a database error during the removal process
+        """
         load_dotenv()
         mock_conn, mock_cursor = mock_db
 
@@ -181,7 +207,7 @@ class TestLogTickets(unittest.TestCase):
 
     def test_is_around_reset_time(self):
         """
-        Tests the reset time checking logic with various scenarios.
+        Tests the reset time checking logic with various scenarios
         """
         reset_t = time(18, 30, 0)
         
@@ -216,9 +242,9 @@ class TestLogTickets(unittest.TestCase):
         self, mock_getenv, mock_read_guild, mock_is_reset, mock_post, mock_enter_tickets
     ):
         """
-        Tests the main logic with a successful run for one guild.
+        Tests the main logic with a successful run for one guild
         """
-        mock_getenv.return_value = "http://fake-url.com"
+        mock_getenv.return_value = "http://api-url.com"
         mock_read_guild.return_value = [("G1", "Test Guild", time(19, 0))]
         mock_is_reset.return_value = True
         
@@ -261,7 +287,7 @@ class TestLogTickets(unittest.TestCase):
         self, mock_getenv, mock_read_guild, mock_is_reset, mock_post, mock_enter_tickets
     ):
         """
-        Tests that guilds are skipped if it's not their reset time.
+        Tests that guilds are skipped if it's not their reset time
         """
 
         mock_getenv.return_value = "http://api-url.com"
@@ -283,9 +309,9 @@ class TestLogTickets(unittest.TestCase):
         self, mock_getenv, mock_read_guild, mock_is_reset, mock_post, mock_enter_tickets
     ):
         """
-        Tests processing multiple guilds where only one is at its reset time.
+        Tests processing multiple guilds where only one is at its reset time
         """
-        mock_getenv.return_value = "http://fake-url.com"
+        mock_getenv.return_value = "http://api-url.com"
         mock_read_guild.return_value = [
             ("G1", "Active Guild", time(19, 0)),
             ("G2", "Inactive Guild", time(20, 0))
@@ -322,12 +348,12 @@ import src.csv_import as csv_import
 
 class TestCSVImport(unittest.TestCase):
     """
-    Unit tests for the csv_import.py module.
+    Unit tests for the csv_import.py module
     """
 
     def setUp(self):
         """
-        Setup a mock CSV import path for the tests.
+        Setup a mock CSV import path for the tests
         """
         self.mock_csv_path = "/mock/csv/folder/"
 

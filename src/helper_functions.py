@@ -12,6 +12,9 @@ logger_filepath: str = str(os.getenv("LOGGER_FILEPATH"))
 
 
 def setup_logging():
+    """
+    Set up logging configuration from a JSON file
+    """
     config_file = Path(logger_filepath)
     try:
         with open(config_file, encoding="utf-8") as f_in:

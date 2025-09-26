@@ -1,6 +1,6 @@
 Metadata-Version: 2.4
 Name: Guild_Data_App
-Version: 0.1.0
+Version: 0.2.0
 Summary: A project to gather and process data from the game SWGOH for guild spreadsheets
 Requires-Python: >=3.10
 Description-Content-Type: text/markdown
@@ -8,4 +8,4 @@ Requires-Dist: requests
 Requires-Dist: pytest
 Requires-Dist: psycopg2
 
-# -SWGOH-Guild-Data
+# SWGOH-Guild-Data

@@ -33,6 +33,9 @@ def env_loading() -> tuple[str, str]:
 
 
 def check_roster(player_id: str, player_url: str) -> tuple:
+    """
+    Check the roster of a player for Zeffo readiness criteria
+    """
     player = json.dumps(post_request(player_url, {"payload": {"playerId": player_id}}))
     player_data = json.loads(player)["rosterUnit"]
 
@@ -115,7 +118,10 @@ def check_roster(player_id: str, player_url: str) -> tuple:
         logging.info(check)
         return check
 
-if __name__ == "__main__":
+def run_roster_checks():
+    """
+    Run roster checks for all players in all guilds
+    """
     env_vars = env_loading()
     guild_url_env = env_vars[0]
     player_url_env = env_vars[1]
@@ -176,3 +182,7 @@ if __name__ == "__main__":
         # Iterate through all players that need an update in the table
         for d in players_to_update:
             updateRosterChecks(check_roster(d, player_url_env))
+
+if __name__ == "__main__":
+    run_roster_checks()
+    logger.info("Roster checks complete")

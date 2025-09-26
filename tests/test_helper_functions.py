@@ -15,6 +15,9 @@ class TestHelperFunctions():
 
     @pytest.fixture
     def mock_env_vars(self):
+        """
+        Fixture to mock environment variables for testing get_env function
+        """
         env_vars = {
             'PASS': 'password',
             'HOST': 'test_host',
@@ -27,6 +30,9 @@ class TestHelperFunctions():
             yield env_vars
 
     def test_get_env(self, mock_env_vars):
+        """
+        Tests the get_env function for retrieving environment variables
+        """
         load_dotenv()
         with pytest.raises(ValueError, match="Error: Check .env file.  should not be None"):
             get_env("")
@@ -35,6 +41,9 @@ class TestHelperFunctions():
 
 
     def test_check_none_list(self):
+        """
+        Tests the check_none_list function for handling None values in lists & tuples
+        """
         with pytest.raises(
             TypeError,
             match=r"check_none_list\(\) missing 2 required positional arguments: 'possible_none_value' and 'error_str'",
@@ -58,6 +67,9 @@ class TestHelperFunctions():
 
 
     def test_check_none_str(self):
+        """
+        Tests the check_none_str function for handling None values in strings
+        """
         with pytest.raises(
             TypeError,
             match=r"check_none_str\(\) missing 2 required positional arguments: 'possible_none_value' and 'error_str'",
@@ -80,6 +92,9 @@ class TestHelperFunctions():
 
 
     def test_is_list_or_tuple_instance(self):
+        """
+        Tests the is_list_or_tuple_instance function for validating list or tuple inputs
+        """
         with pytest.raises(
             TypeError, match="Input_value is not a list or tuple. Check input_value"
         ):
@@ -97,6 +112,9 @@ class TestHelperFunctions():
 
 
     def test_floatify(self):
+        """
+        Tests the floatify function for converting values to float
+        """
         assert type(floatify(1)) is float
         assert type(floatify(999999)) is float
         assert type(floatify("")) is str

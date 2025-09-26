@@ -24,6 +24,9 @@ setup_logging()
 #    return (reset_time > current_time) or (reset_time <= time_in_2_minutes)
 
 def is_around_reset_time(reset_time, now=None):
+    """
+    Check if the current time is within a 2-minute window before the reset time
+    """
     if now is None:
         now = datetime.now()
     
@@ -41,7 +44,7 @@ def is_around_reset_time(reset_time, now=None):
 
 def process_ticket_log():
     """
-    Checks if it's a guild's reset time, if so, fetches guild data and logs tickets to DB.
+    Checks if it's a guild's reset time, if so, fetches guild data and logs tickets to DB
     """
     load_dotenv()
     guild_url = check_none_str(

@@ -18,6 +18,9 @@ setup_logging()
 
 
 def get_guild_random(input_list: list[list]) -> str:
+    """
+    Get the guild name of a random player from the input list, to check which guild the TB data belongs to
+    """
     guild_names = []
     for x in np.random.randint(0, len(input_list), size=10):
         guild_names.append(get_guild_from_nickname(input_list[x][0]))
@@ -33,6 +36,9 @@ def get_guild_random(input_list: list[list]) -> str:
 
 
 def import_tb_data():
+    """
+    Import territory battle data from a CSV file exported from HotUtils
+    """
     try:
         tb_data = pd.read_csv(
             f"{csv_import_folder_filepath}tb_data.csv",

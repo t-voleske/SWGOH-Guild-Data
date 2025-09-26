@@ -22,7 +22,10 @@ setup_logging()
 
 load_dotenv()
 
-if __name__ == "__main__":
+def spreadsheet_update():
+    """
+    Update the Google Sheets with the latest data from the database
+    """
     # Create gspread object to interact with spreadsheet API
     filepath: str = check_none_str(
         os.getenv("FILEPATH_CREDENTIALS"),
@@ -143,3 +146,7 @@ if __name__ == "__main__":
 
 
         write_to_sheet(g, "Raid_progression", df_raid_progression, "A2:C51")
+
+if __name__ == "__main__":
+    spreadsheet_update()
+    logger.info("Spreadsheet update complete")
