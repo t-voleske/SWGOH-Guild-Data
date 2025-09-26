@@ -1,7 +1,6 @@
 import logging
 from pathlib import Path
 import os
-import sys
 from datetime import datetime
 from dotenv import load_dotenv
 import pandas as pd
@@ -33,7 +32,7 @@ def get_guild_random(input_list: list[list]) -> str:
         return max(guild_names_set, key=guild_names.count)
 
 
-if __name__ == "__main__":
+def import_tb_data():
     try:
         tb_data = pd.read_csv(
             f"{csv_import_folder_filepath}tb_data.csv",
@@ -43,19 +42,25 @@ if __name__ == "__main__":
         )
     except FileNotFoundError:
         logger.error("File not found. Check csv_import folder")
-        sys.exit()
+        return
     except pd.errors.EmptyDataError:
         logger.error("CSV file is empty")
+        return
     except pd.errors.ParserError:
         logger.error("Error parsing CSV")
+        return
 
     logger.debug(tb_data.head())
     deployed_gp_df = tb_data.filter(regex=r"Name|Deployed GP")
+
+    summed_data = tb_data.filter(regex=r"Name|Total Territory Points")
+
+    combat_waves_df = tb_data.filter(regex=r"Name|Combat Waves")
+    summed_data["Combat Waves"] = combat_waves_df.select_dtypes(include="number").sum(axis=1)
+
     combat_attempts_df = tb_data.filter(regex=r"Name|Combat Attempts")
-    summed_data = tb_data.filter(regex=r"Name|Total Territory Points|Combat Waves")
-    summed_data["Combat Attempts"] = combat_attempts_df.select_dtypes(
-        include="number"
-    ).sum(axis=1)
+    summed_data["Combat Attempts"] = combat_attempts_df.select_dtypes(include="number").sum(axis=1)
+    
     summed_data["Wave Success Ratio"] = [
         None if y == 0 else round(x / (y * 2), 2)
         for x, y in zip(summed_data["Combat Waves"], summed_data["Combat Attempts"])
@@ -63,6 +68,7 @@ if __name__ == "__main__":
     summed_data["Missed Phases"] = (
         deployed_gp_df.select_dtypes(include="number") == 0
     ).sum(axis=1)
+
     logger.debug(summed_data)
     summed_data_list = summed_data.values.tolist()
     logger.info("summed_data_list")
@@ -81,3 +87,7 @@ if __name__ == "__main__":
         logger.info("File renamed successfully")
     except FileNotFoundError:
         logger.error("File not found")
+
+
+if __name__ == "__main__":
+    import_tb_data()
