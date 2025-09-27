@@ -1,4 +1,4 @@
-# SWGOH Guild Data App
+# SWGOH Guild Data
 
 A project to gather, process, and manage data from the game **Star Wars: Galaxy of Heroes (SWGOH)** for guild management and spreadsheet reporting.
 
