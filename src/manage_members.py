@@ -38,8 +38,6 @@ class Player:
         self.ground_gp = ground_gp
         self.last_activity_time = dt.fromtimestamp(int(last_activity_time) / 1000)
         self.current_tickets = current_tickets
-        logger.debug(self.nickname)
-        logger.debug(self.last_activity_time)
         update_activity(self.last_activity_time, self.player_id)
         updateGP(self.galactic_power, self.player_id)
 
@@ -76,7 +74,6 @@ if __name__ == "__main__":
             )
         )
         data = json.loads(guild)["guild"]["member"]
-        logger.debug("guild: %s", guild)
         playerArr = []
         nicknameArr = []
         for m in data:

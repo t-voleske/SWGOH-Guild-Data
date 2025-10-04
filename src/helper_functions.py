@@ -6,29 +6,28 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-
 logger = logging.getLogger("guild_data_app")
-logger_filepath: str = str(os.getenv("LOGGER_FILEPATH"))
-
 
 def setup_logging():
     """
     Set up logging configuration from a JSON file
     """
+    logger_filepath: str = str(os.getenv("LOGGER_FILEPATH"))
     config_file = Path(logger_filepath)
-    try:
-        with open(config_file, encoding="utf-8") as f_in:
-            config = json.load(f_in)
-        logging.config.dictConfig(config)
-    except FileNotFoundError:
-        # Fallback to basic logging if config file doesn't exist
-        logging.basicConfig(level=logging.INFO)
-        logging.error(
-            "Logging config file %s not found, using basic config", config_file
-        )
-    except (json.JSONDecodeError, KeyError) as e:
-        logging.basicConfig(level=logging.INFO)
-        logging.error("Error loading logging config: %s", e)
+    if Path(config_file).exists():
+        try:
+            with open(config_file, encoding="utf-8") as f_in:
+                config = json.load(f_in)
+            logging.config.dictConfig(config)
+        except FileNotFoundError:
+            # Fallback to basic logging if config file doesn't exist
+            logging.basicConfig(level=logging.INFO)
+            logging.error(
+                "Logging config file %s not found, using basic config", config_file
+            )
+        except (json.JSONDecodeError, KeyError) as e:
+            logging.basicConfig(level=logging.INFO)
+            logging.error("Error loading logging config: %s", e)
 
 
 setup_logging()

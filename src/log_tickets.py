@@ -13,16 +13,6 @@ logger = logging.getLogger("guild_data_app")
 setup_logging()
 
 
-# guarding against data entry out of reset window
-#def is_around_reset_time(reset_time, now=None):
-#    if now is None:
-#        now = datetime.now()
-#    current_time = now.time()
-#    time_in_2_minutes = (now + timedelta(minutes=2)).time()
-#    if time_in_2_minutes > current_time:
-#        return current_time < reset_time <= time_in_2_minutes
-#    return (reset_time > current_time) or (reset_time <= time_in_2_minutes)
-
 def is_around_reset_time(reset_time, now=None):
     """
     Check if the current time is within a 2-minute window before the reset time

@@ -1,0 +1,18 @@
+services:
+  guild_data_app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: guild_data_app:latest
+    restart: unless-stopped
+    env_file: .env
+    secrets:
+      - credentials_json
+    container_name: guild_data_app
+    command: [ "./scripts/entrypoint.sh" ]
+    volumes:
+      - ./logs:/var/log
+
+secrets:
+  credentials_json:
+    file: ./credentials.json

@@ -4,7 +4,7 @@ black
 mypy
 pytest-cov
 pytest-mock
-psycopg2
+psycopg2-binary
 requests
 python-dotenv
 pandas
