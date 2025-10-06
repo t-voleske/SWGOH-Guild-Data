@@ -26,7 +26,6 @@ def archive_process():
     filtered_players_data = [
         (x[0], x[1], x[2], x[5]) for x in raw_players_data if x[5] not in guild_ids
     ]
-    logger.debug(filtered_players_data)
 
     enter_player_archive(filtered_players_data)
     to_remove = [(i[0],) for i in filtered_players_data]

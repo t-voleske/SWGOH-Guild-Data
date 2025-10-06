@@ -10,7 +10,7 @@ src/helper_functions.py
 src/log_gp.py
 src/log_raid_score.py
 src/log_tickets.py
-src/main.py
+src/manage_members.py
 src/push_to_sheets.py
 src/read_data.py
 src/remove_data.py
