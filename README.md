@@ -6,6 +6,7 @@ A project to gather, process, and manage data from the game **Star Wars: Galaxy 
 
 - **Automated Data Collection:** Fetches player, guild, and raid data via API requests, as well as .csv imports.
 - **Database Integration:** Reads from and writes to a PostgreSQL database for persistent storage.
+- **Containerization:** Runs in a docker container with dependencies managed through UV and environment variables imported at run-time. 
 - **Spreadsheet Sync:** Updates Google Sheets with the latest guild and player statistics.
 - **Logging & Error Handling:** Configurable logging for debugging and monitoring.
 - **Roster & Ticket Tracking:** Tracks player activity, raid scores, tickets, and roster requirements.
@@ -25,7 +26,7 @@ A project to gather, process, and manage data from the game **Star Wars: Galaxy 
 │   ├── log_gp.py
 │   ├── log_raid_score.py
 │   ├── log_tickets.py
-│   ├── main.py
+│   ├── manage_members.py
 │   ├── push_to_sheets.py
 │   ├── read_data.py
 │   ├── remove_data.py
@@ -33,6 +34,14 @@ A project to gather, process, and manage data from the game **Star Wars: Galaxy 
 │   ├── spreadsheet_operations.py
 │   ├── update_data.py
 │   └── ...
+├── scripts/              # Scripts that are run through the container crontab & entrypoint script
+│   ├── entrypoint.sh
+│   ├── run_check_raid_results.sh
+│   ├── run_log_gp.sh
+│   ├── run_log_raid_score.sh
+│   ├── run_manage_members.sh
+│   ├── run_push_to_sheets.sh
+│   ├── run_roster_checks.sh
 ├── tests/                # Unit tests
 ├── README.md             # This file
 ```
