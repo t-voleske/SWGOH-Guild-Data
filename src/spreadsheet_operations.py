@@ -147,10 +147,6 @@ def update_not_needed(
         else:
             logger.info("No ordering information found in spreadsheet")
         
-        logger.debug("Worksheet Dataframe:")
-        logger.debug(table_df)
-        logger.debug("\n Database Dataframe:")
-        logger.debug(database_df)
         data_equal_check = np.array_equal(table_df.values, database_df.values)
 
         logger.info("\n The data is equal: %s", data_equal_check)
@@ -178,12 +174,11 @@ def write_to_sheet(
         g_config[1],
         worksheet_range,
     )
-    logger.info(g_config)
     sheet = gc.open(g_config[3])
 
     try:
         active_worksheet = sheet.worksheet(worksheet_name)
-        logger.debug(data_df)
+        #logger.debug(data_df)
 
         active_worksheet.batch_clear([worksheet_range])
         active_worksheet.update(

@@ -2,6 +2,8 @@ FROM python:3.13.7-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
 RUN apt-get update && \
     apt-get install -y \
     cron \
@@ -13,19 +15,21 @@ RUN apt-get update && \
 
 WORKDIR /app
 
+COPY pyproject.toml .
+COPY uv.lock* .
+
+RUN uv sync --frozen
+
 ENV PYTHONPATH=/app
+ENV PATH="/app/.venv/bin:$PATH"
+ENV UV_PROJECT_ENVIRONMENT=/app/.venv
 
 ENV TZ=Europe/Berlin
 
-COPY requirements.txt .
-
 COPY logging_config.json .
 
-COPY pyproject.toml .
 
 RUN mkdir -p /var/log && touch /var/log/cron.log && chmod 0666 /var/log/cron.log
-
-RUN pip install --no-cache-dir -r requirements.txt
 
 USER root
 

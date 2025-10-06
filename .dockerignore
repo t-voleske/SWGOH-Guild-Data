@@ -16,3 +16,4 @@ logs/guild_data_app.log.2
 logs/guild_data_app.log.3
 .pytest_cache/
 *.env
+.venv/

@@ -37,5 +37,5 @@ cron
 echo "Current time: $(date)"
 echo "Waiting for cron jobs..."
 
-# Follow logs (only files, not directories)
+# Follow logs
 tail -f /var/log/*.log 2>/dev/null || tail -f /var/log/push_to_sheets.log

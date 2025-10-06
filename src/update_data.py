@@ -44,7 +44,6 @@ def remove_from_guild(player_id: str):
                 "UPDATE players SET guild_id = %s WHERE nickname = %s ;",
                 (" ", player_id),
             )
-            logger.info("Updated player: %s", player_id)
 
             # Commit the changes
             conn.commit()
@@ -74,7 +73,6 @@ def update_activity(activity_time, player_id: str):
         # read the connection parameters
 
         # connect to the PostgreSQL server
-        logger.info("Updating activity in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 
@@ -110,10 +108,8 @@ def updateGP(gp, player_id: str):
     pg_connection_dict = setup_connection()
     conn = None
     try:
-        # read the connection parameters
 
         # connect to the PostgreSQL server
-        logger.info("Updating GP in DB...")
         conn = psycopg2.connect(**pg_connection_dict)
         # Open a cursor to perform database operations
 

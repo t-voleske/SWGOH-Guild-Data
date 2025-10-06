@@ -85,7 +85,6 @@ def floatify(x: int | str | float) -> float | str:
     if x == "":
         return "-"
     if isinstance(x, float):
-        logger.debug("Value is already a float. No conersion needed.")
         return x
     try:
         return float(x)
