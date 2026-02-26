@@ -1,7 +1,7 @@
 [project]
 name = "guild-data-app"
 version = "0.1.0"
-description = "Add your description here"
+description = "Project to gather, process and display guild data"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [

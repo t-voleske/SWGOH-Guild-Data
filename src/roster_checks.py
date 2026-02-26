@@ -1,17 +1,20 @@
+"""
+Check zeffo, mandalore and reva readiness of the rosters currently in the guild. 
+Writes the results into the provided psql db.
+"""
+
 import os
 import json
 import logging
 from dotenv import load_dotenv
+
 from .read_data import read_players, read_roster_check, read_guild
 from .update_data import updateRosterChecks
 from .api_request import post_request
 from .enter_data import enter_player_check
 from .helper_functions import (
-    check_none_str,
-    check_none_list,
-    is_list_or_tuple_instance,
-    setup_logging,
-)
+    check_none_str,check_none_list,is_list_or_tuple_instance,setup_logging
+    )
 
 
 logger = logging.getLogger("guild_data_app")
@@ -34,89 +37,153 @@ def env_loading() -> tuple[str, str]:
 
 def check_roster(player_id: str, player_url: str) -> tuple:
     """
-    Check the roster of a player for Zeffo readiness criteria
+    Check the roster of a player for Zeffo, Mandalore & Reva readiness criteria
+    Zeffo readiness: Cere R7 + Jedi Cal R7
+    Mandalore: BKM R7 (as her unlock already implies the other requirements are ready)
+    Reva: 5 Inquisitors, including at least two out of GI, Reva or Marrok
     """
     player = json.dumps(post_request(player_url, {"payload": {"playerId": player_id}}))
-    player_data = json.loads(player)["rosterUnit"]
+    player_data = json.loads(player).get("rosterUnit")
+    player_name = json.loads(player).get("name")
 
-    # 7 star checks
-    cal_7_star = any(t["definitionId"] == "CALKESTIS:SEVEN_STAR" for t in player_data)
-    cere_7_star = any(t["definitionId"] == "CEREJUNDA:SEVEN_STAR" for t in player_data)
-    merrin_7_star = any(t["definitionId"] == "MERRIN:SEVEN_STAR" for t in player_data)
-    tarfful_7_star = any(t["definitionId"] == "TARFFUL:SEVEN_STAR" for t in player_data)
-    saw_7_star = any(t["definitionId"] == "SAWGERRERA:SEVEN_STAR" for t in player_data)
-    all_7_star = all(
-        [cal_7_star, cere_7_star, merrin_7_star, tarfful_7_star, saw_7_star]
+
+    # Journey guide unit checks & default values
+    reva_ready = False
+    gi_r7 = any(
+        t.get("definitionId") == "GRANDINQUISITOR:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
     )
+    bkm_r7 = any(
+        t.get("definitionId") == "MANDALORBOKATAN:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    reva_r7 = any(
+        t.get("definitionId") == "THIRDSISTER:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    #-------
+    # Check reva ready required units
+    marrok_r7 = any(
+        t.get("definitionId") == "MARROK:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    seventh_sister_r7 = any(
+        t.get("definitionId") == "SEVENTHSISTER:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    fifth_brother_r7 = any(
+        t.get("definitionId") == "FIFTHBROTHER:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    eighth_brother_r7 = any(
+        t.get("definitionId") == "EIGHTHBROTHER:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    #ninth_sister_r7 =  any(
+    #    t.get("definitionId") == "NINTHSISTER:SEVEN_STAR"
+    #    and t.get("relic") is not None
+    #    and t.get("relic").get("currentTier", 0) >= 9
+    #    for t in player_data
+    #)
+    
+    #Check, if at least a full team is ready for the reva mission
+    all_inquisitors = [gi_r7, reva_r7, marrok_r7, seventh_sister_r7, fifth_brother_r7, eighth_brother_r7]
+    key_units = [gi_r7, reva_r7, marrok_r7]
+
+    if sum(all_inquisitors) >= 5 and sum(key_units) >= 2:
+        reva_ready = True
 
     # Jedi Cal unlocked check
     jedi_cal_unlocked = any(
-        t["definitionId"] == "JEDIKNIGHTCAL:SEVEN_STAR" for t in player_data
+        t.get("definitionId") == "JEDIKNIGHTCAL:SEVEN_STAR" for t in player_data
     )
     # Check if Jedi Cal is at lvl 85
     jedi_cal_leveled = any(
-        t["definitionId"] == "JEDIKNIGHTCAL:SEVEN_STAR" and t["currentLevel"] == 85
+        t.get("definitionId") == "JEDIKNIGHTCAL:SEVEN_STAR" and t.get("currentLevel") == 85
         for t in player_data
     )
+
+
     if not jedi_cal_leveled:
-        check = all_7_star, jedi_cal_unlocked, False, False, False, player_id
+        check = reva_ready, gi_r7, bkm_r7, jedi_cal_unlocked, False, False, False, player_id
         logging.info("Jedi Cal not lvl 85 yet")
-        return check
-
-    else:
-        # Relics checks
-        jedi_cal_r7 = any(
-            t["definitionId"] == "JEDIKNIGHTCAL:SEVEN_STAR"
-            and t["relic"]["currentTier"] >= 9
-            for t in player_data
-        )
-        cere_r7 = any(
-            t["definitionId"] == "CEREJUNDA:SEVEN_STAR"
-            and t["relic"]["currentTier"] >= 9
-            for t in player_data
-        )
-
-        # Ability level checks
-        skills = [
-            t for t in player_data if t["definitionId"] == "JEDIKNIGHTCAL:SEVEN_STAR"
-        ][0]["skill"]
-        jedi_cal_unique = any(
-            t["id"] == "uniqueskill_JEDIKNIGHTCAL01" and t["tier"] >= 6 for t in skills
-        )
-        jedi_cal_leader = any(
-            t["id"] == "leaderskill_JEDIKNIGHTCAL" and t["tier"] >= 5 for t in skills
-        )
-
-        jedi_cal_special_03 = any(
-            t["id"] == "specialskill_JEDIKNIGHTCAL03" and t["tier"] >= 5 for t in skills
-        )
-
-        jedi_cal_special_02 = any(
-            t["id"] == "specialskill_JEDIKNIGHTCAL02" and t["tier"] >= 6 for t in skills
-        )
-
-        jedi_cal_special_01 = any(
-            t["id"] == "specialskill_JEDIKNIGHTCAL01" and t["tier"] >= 6 for t in skills
-        )
-        jedi_cal_skills_done = (
-            jedi_cal_unique
-            and jedi_cal_leader
-            and jedi_cal_special_03
-            and jedi_cal_special_02
-            and jedi_cal_special_01
-        )
-
-        check = (
-            all_7_star,
-            jedi_cal_unlocked,
-            jedi_cal_r7,
-            cere_r7,
-            jedi_cal_skills_done,
-            player_id,
-        )
-        logging.info("Else reached")
         logging.info(check)
+        logging.info(player_name)
         return check
+
+    
+    # Relics checks
+    jedi_cal_r7 = any(
+        t.get("definitionId") == "JEDIKNIGHTCAL:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+    cere_r7 = any(
+        t.get("definitionId") == "CEREJUNDA:SEVEN_STAR"
+        and t.get("relic") is not None
+        and t.get("relic").get("currentTier", 0) >= 9
+        for t in player_data
+    )
+
+    # Ability level checks
+    skills = [
+        t for t in player_data if t.get("definitionId") == "JEDIKNIGHTCAL:SEVEN_STAR"
+        ][0]["skill"]
+    jedi_cal_unique = any(
+        t.get("id") == "uniqueskill_JEDIKNIGHTCAL01" and t.get("tier") >= 6 for t in skills
+    )
+    jedi_cal_leader = any(
+        t.get("id") == "leaderskill_JEDIKNIGHTCAL" and t.get("tier") >= 5 for t in skills
+    )
+
+    jedi_cal_special_03 = any(
+        t.get("id") == "specialskill_JEDIKNIGHTCAL03" and t.get("tier") >= 5 for t in skills
+    )
+
+    jedi_cal_special_02 = any(
+        t.get("id") == "specialskill_JEDIKNIGHTCAL02" and t.get("tier") >= 6 for t in skills
+    )
+
+    jedi_cal_special_01 = any(
+        t.get("id") == "specialskill_JEDIKNIGHTCAL01" and t.get("tier") >= 6 for t in skills
+    )
+    jedi_cal_skills_done = (
+        jedi_cal_unique
+        and jedi_cal_leader
+        and jedi_cal_special_03
+        and jedi_cal_special_02
+        and jedi_cal_special_01
+    )
+
+    check = (
+        reva_ready,
+        gi_r7,
+        bkm_r7,
+        jedi_cal_unlocked,
+        jedi_cal_r7,
+        cere_r7,
+        jedi_cal_skills_done,
+        player_id,
+    )
+    logging.info("Else reached")
+    logging.info(check)
+    logging.info(player_name)
+    return check
 
 def run_roster_checks():
     """
@@ -151,30 +218,21 @@ def run_roster_checks():
         logger.debug(players)
         players = [x for x in players if x is not None]
 
-        # No update needed for players already zeffo_ready == True
-        already_zeffo_ready = [
-            y[0]
-            for y in roster_check_data
-            if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6]
-        ]
-        # filter for players that are zeffo_ready == False, then map entry to their player_id
-        players_to_update = [
-            y[0]
-            for y in roster_check_data
-            if check_none_list(is_list_or_tuple_instance(y), "Canno be None")[6] is False
-        ]
-        logger.info("players_to_update: %s", players_to_update)
+        # Build set of player ids present in roster checks table for better lookup in next step
+        present_player_ids = {value[0] for value in roster_check_data} 
 
-        # Remove zeffo ready and players to update from players list
-        players = [
-            x
-            for x in players
-            if x not in already_zeffo_ready and x not in players_to_update
-        ]
+        players_to_enter = [item for item in roster_check_data if item[0] not in present_player_ids]
+
+        # Set of player ids for those, that need to be newly created in db
+        players_to_enter_set = {value[0] for value in players_to_enter}
+
+        # List of players that need to be updated in db
+        players_to_update = [item for item in players if item[0] not in players_to_enter_set]
+        logger.info("players_to_update: %s", players_to_update)
 
         # Iterate through all players that need an initial entry in the table
         roster_array = []
-        for e in players:
+        for e in players_to_enter:
             roster_array.append(check_roster(e, player_url_env))
 
         enter_player_check(roster_array)

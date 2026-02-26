@@ -6,7 +6,7 @@ import pandas as pd
 import psycopg2
 from dotenv import load_dotenv
 from .read_data import (
-    read_players_data,
+    read_players_data_full_rote,
     read_tickets_weekly,
     read_tickets_monthly,
     read_member_points,
@@ -48,7 +48,7 @@ def spreadsheet_update():
     for g in guilds_config:
         try:
             df_main = pd.DataFrame(
-                read_players_data(g[0], check_order(g, MAIN_SHEET)),
+                read_players_data_full_rote(g[0], check_order(g, MAIN_SHEET)),
                 columns=[
                     "nickname",
                     "last_activity",
@@ -56,6 +56,8 @@ def spreadsheet_update():
                     "raid_score",
                     "average_percent",
                     "zeffo_ready",
+                    "mandalore_ready",
+                    "reva_ready",
                     "tickets_lost_week",
                     "days_tickets_lost",
                 ],
@@ -67,7 +69,7 @@ def spreadsheet_update():
         except psycopg2.DataError:
             logger.warning("%s does not have any player data to write to sheets.", g[1])
 
-        write_to_sheet(g, "Main", df_main, "A2:H51")
+        write_to_sheet(g, "Main", df_main, "A2:J51")
 
         try:
             df_weekly = pd.DataFrame(

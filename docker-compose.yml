@@ -12,6 +12,7 @@ services:
     command: [ "./scripts/entrypoint.sh" ]
     volumes:
       - ./logs:/var/log
+      - ./src:/app/src
 
 secrets:
   credentials_json:

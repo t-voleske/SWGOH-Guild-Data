@@ -9,7 +9,7 @@ A project to gather, process, and manage data from the game **Star Wars: Galaxy 
 - **Containerization:** Runs in a docker container with dependencies managed through UV and environment variables imported at run-time. 
 - **Spreadsheet Sync:** Updates Google Sheets with the latest guild and player statistics.
 - **Logging & Error Handling:** Configurable logging for debugging and monitoring.
-- **Roster & Ticket Tracking:** Tracks player activity, raid scores, tickets, and roster requirements.
+- **Roster & Ticket Tracking:** Tracks player activity, raid scores, tickets, and roster requirements for the Rise of the Empire TB. That includes readiness for the special mission to unlock Zeffo, Mandalore and the special mission to aquire Reva shards.
 - **Data Archiving:** Archives players who have left the guild and removes them from the active members tables.
 
 ## Project Structure

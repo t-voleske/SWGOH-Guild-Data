@@ -112,9 +112,9 @@ def enter_player_check(player_checks):
         with conn.cursor() as cur:
             cur.executemany(
                 "INSERT INTO players_roster_checks "
-                "(all_jkck_reqs_7_star, jkck_unlocked, "
+                "(reva_ready, gi_r7, bkm_r7, jkck_unlocked, "
                 "jkck_r7, cere_r7, jkck_skill_levels_done, player_id) "
-                "VALUES (%s, %s, %s, %s, %s, %s);",
+                "VALUES (%s, %s, %s, %s, %s, %s, %s, %s);",
                 player_checks,
             )
             logger.info("Inserted into players_roster_checks")

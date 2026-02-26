@@ -3,6 +3,7 @@ import psycopg2
 from .helper_functions import get_env, setup_logging
 
 
+
 logger = logging.getLogger("guild_data_app")
 setup_logging()
 
@@ -226,6 +227,24 @@ def read_players_data(guild_id: str, order_str: str) -> list:
     query_str: str = (
         "SELECT "
         "* FROM players_data "
+        "WHERE nickname IN "
+        "(SELECT nickname FROM players WHERE guild_id = %s) "
+        f"ORDER BY {validated_order_str};"
+    )
+    query_source: str = "players"
+    query_tuple: tuple = (guild_id,)
+    query_return: list = make_sql_query_single(query_str, query_source, query_tuple)
+    return query_return
+
+
+def read_players_data_full_rote(guild_id: str, order_str: str) -> list:
+    """
+    Get the players_data_full_rote view for guild_id, ordered by order_str
+    """
+    validated_order_str: str = get_valid_order_parameter(order_str)
+    query_str: str = (
+        "SELECT "
+        "* FROM players_dataplayers_data_full_rote "
         "WHERE nickname IN "
         "(SELECT nickname FROM players WHERE guild_id = %s) "
         f"ORDER BY {validated_order_str};"

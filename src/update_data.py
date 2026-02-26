@@ -194,7 +194,8 @@ def updateRosterChecks(player_checks):
         with conn.cursor() as cur:
             # Update a data row in the table
             cur.execute(
-                "UPDATE players_roster_checks SET all_jkck_reqs_7_star = %s,"
+                "UPDATE players_roster_checks SET reva_ready = %s,"
+                " gi_r7 = %s, bkm_r7 = %s,"
                 " jkck_unlocked = %s, jkck_r7 = %s, cere_r7 = %s,"
                 " jkck_skill_levels_done = %s WHERE player_id = %s ;",
                 player_checks,
