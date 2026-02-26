@@ -30,8 +30,10 @@ import psycopg2
         (
             enter_player_check,
             "players_roster_checks",
-            [("True", "True", "False", "True", "True", "1")],
-            "INSERT INTO players_roster_checks (all_jkck_reqs_7_star, jkck_unlocked, jkck_r7, cere_r7, jkck_skill_levels_done, player_id) VALUES (%s, %s, %s, %s, %s, %s);",
+            [("True", "False", "True", "True", "False", "True", "True", "1")],
+            "INSERT INTO players_roster_checks (reva_ready, gi_r7, bkm_r7, jkck_unlocked, "
+            "jkck_r7, cere_r7, jkck_skill_levels_done, player_id) "
+            "VALUES (%s, %s, %s, %s, %s, %s, %s, %s);",
         ),
         (
             enter_tickets,
